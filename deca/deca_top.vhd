@@ -169,12 +169,10 @@ architecture RTL of deca_top is
 	end component;
 
 	-- DAC AUDIO     
-	--signal dac_l : signed(15 downto 0);
-	--signal dac_r : signed(15 downto 0);
-	signal dac_l: std_logic_vector(9 downto 0);
-	signal dac_r: std_logic_vector(9 downto 0);
-	signal dac_l_s: std_logic_vector(15 downto 0);
-	signal dac_r_s: std_logic_vector(15 downto 0);
+	signal dac_l: signed(9 downto 0);
+	signal dac_r: signed(9 downto 0);
+    signal dac_l_s: signed(15 downto 0);
+    signal dac_r_s: signed(15 downto 0);
 
 	-- I2S
 	signal i2s_Mck_o : std_logic;
@@ -275,15 +273,17 @@ begin
 			dac_LRCK  => i2s_Lr_o,
 			dac_SCLK  => i2s_Sck_o,
 			dac_SDIN  => i2s_D_o,
-		--	L_data    => std_logic_vector(dac_l),
-		--	R_data    => std_logic_vector(dac_r)
+			--L_data    => std_logic_vector(dac_l & "000000"),
+			--R_data    => std_logic_vector(dac_r & "000000")
 			L_data    => std_logic_vector(dac_l_s),
 			R_data    => std_logic_vector(dac_r_s)
 		);
 
-	dac_l_s <= ('0' & dac_l & "00000");
-	dac_r_s <= ('0' & dac_r & "00000");
-
+	dac_l_s <= ((not dac_l(9)) & dac_l(8 downto 0) & dac_l(9 downto 4));
+	dac_r_s <= ((not dac_r(9)) & dac_r(8 downto 0) & dac_r(9 downto 4));
+	--dac_l_s <= ('0' & dac_l & "00000");
+	--dac_r_s <= ('0' & dac_r & "00000");
+	
 	I2S_MCK <= i2s_Mck_o;
 	I2S_SCK <= i2s_Sck_o;
 	I2S_LR  <= i2s_Lr_o;
@@ -368,8 +368,8 @@ begin
 				-- vga_x_hs  => vga_x_hs,
 				-- vga_x_vs  => vga_x_vs,
 			--AUDIO
-				 DAC_L_O   => dac_l,
-				 DAC_R_O   => dac_r,
+				DAC_C_L   => dac_l,
+				DAC_C_R   => dac_r,
 			AUDIO_L => SIGMA_L,
 			AUDIO_R => SIGMA_R
 		);

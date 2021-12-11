@@ -125,12 +125,10 @@ Port (
 end component;	
 
 -- DAC AUDIO     
---signal dac_l: signed(15 downto 0);
---signal dac_r: signed(15 downto 0);
-signal dac_l: std_logic_vector(9 downto 0);
-signal dac_r: std_logic_vector(9 downto 0);
-signal dac_l_s: std_logic_vector(15 downto 0);
-signal dac_r_s: std_logic_vector(15 downto 0);
+signal dac_l: signed(9 downto 0);
+signal dac_r: signed(9 downto 0);
+signal dac_l_s : signed(15 downto 0);
+signal dac_r_s : signed(15 downto 0);
 
 
 component joydecoder is
@@ -212,14 +210,14 @@ port map(
 	dac_LRCK  => I2S_LRCLK,
 	dac_SCLK  => I2S_BCLK,
 	dac_SDIN  => I2S_DATA,
---	L_data    => std_logic_vector(dac_l),
---	R_data    => std_logic_vector(dac_r)
 	L_data    => std_logic_vector(dac_l_s),
 	R_data    => std_logic_vector(dac_r_s)
 );		
 
-	dac_l_s <= ('0' & dac_l & "00000");
-	dac_r_s <= ('0' & dac_r & "00000");
+--dac_l_s <= (dac_l & dac_l(9 downto 4));
+--dac_r_s <= (dac_r & dac_r(9 downto 4));
+dac_l_s <= ((not dac_l(9)) & dac_l(8 downto 0) & dac_l(9 downto 4));
+dac_r_s <= ((not dac_r(9)) & dac_r(8 downto 0) & dac_r(9 downto 4));
 
 	-- JOYSTICKS
 joy: joydecoder
@@ -234,6 +232,11 @@ joy: joydecoder
 		joy1right		=> joy1right,
 		joy1fire1		=> joy1fire1,
 		joy1fire2		=> joy1fire2,
+		joy2up  			=> joy2up,
+		joy2down			=> joy2down,
+		joy2left			=> joy2left,
+		joy2right		=> joy2right,
+		joy2fire1		=> joy2fire1,
 		joy2fire2		=> joy2fire2
 	);
 	
@@ -264,10 +267,10 @@ guest: COMPONENT  mist_top
 	--AUDIO
     AUDIO_L => SIGMA_L,
     AUDIO_R => SIGMA_R,
-		DAC_L_O   => dac_l,
-		DAC_R_O   => dac_r,
+		DAC_C_L   => dac_l,
+		DAC_C_R   => dac_r,
 	--EAR
-	UART_RX  => AUDIO_INPUT,
+	UART_RX => AUDIO_INPUT,
 	--VGA
 	VGA_HS => vga_hsync,
 	VGA_VS => vga_vsync,
