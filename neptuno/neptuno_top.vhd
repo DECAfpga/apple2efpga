@@ -35,13 +35,11 @@ entity neptuno_top is
 		I2S_BCLK				: out   std_logic								:= '0';
 		I2S_LRCLK				: out   std_logic								:= '0';
 		I2S_DATA				: out   std_logic								:= '0';		
-      
 		-- JOYSTICK 
 		JOY_CLK				: out   std_logic;
 		JOY_LOAD 			: out   std_logic;
 		JOY_DATA 			: in    std_logic;
 		joyP7_o			    : out   std_logic								:= '1';
-
 		-- PS2
 		PS2_KEYBOARD_CLK            :    INOUT STD_LOGIC;
 		PS2_KEYBOARD_DAT            :    INOUT STD_LOGIC;
@@ -53,13 +51,11 @@ entity neptuno_top is
         stm_rx_o            : out std_logic     := 'Z'; -- stm RX pin, so, is OUT on the slave
         stm_tx_i            : in  std_logic     := 'Z'; -- stm TX pin, so, is IN on the slave
         stm_rst_o           : out std_logic     := 'Z'; -- '0' to hold the microcontroller reset line, to free the SD card
-
 		-- SD Card
 		sd_cs_n_o                      : out   std_logic := '1';
 		sd_sclk_o                      : out   std_logic := '0';
 		sd_mosi_o                      : out   std_logic := '0';
 		sd_miso_i                      : in    std_logic
-	
 	);
 END entity;
 
@@ -95,7 +91,9 @@ architecture RTL of neptuno_top is
 	signal ps2_mouse_dat_in: std_logic;
 	signal ps2_mouse_clk_out: std_logic;
 	signal ps2_mouse_dat_out: std_logic;
-	
+
+	signal intercept : std_logic;
+
 -- Video
 	signal vga_red: std_logic_vector(7 downto 0);
 	signal vga_green: std_logic_vector(7 downto 0);
@@ -129,9 +127,10 @@ end component;
 -- DAC AUDIO     
 --signal dac_l: signed(15 downto 0);
 --signal dac_r: signed(15 downto 0);
-
---signal audio_l_s			: std_logic_vector(15 downto 0);
---signal audio_r_s			: std_logic_vector(15 downto 0);
+signal dac_l: std_logic_vector(9 downto 0);
+signal dac_r: std_logic_vector(9 downto 0);
+signal dac_l_s: std_logic_vector(15 downto 0);
+signal dac_r_s: std_logic_vector(15 downto 0);
 
 
 component joydecoder is
@@ -205,20 +204,22 @@ VGA_HS<=vga_hsync;
 VGA_VS<=vga_vsync;
 
 
--- -- I2S audio
--- audio_i2s: entity work.audio_top
--- port map(
--- 	clk_50MHz => clock_50_i,
--- 	dac_MCLK  => I2S_MCLK,
--- 	dac_LRCK  => I2S_LRCLK,
--- 	dac_SCLK  => I2S_BCLK,
--- 	dac_SDIN  => I2S_DATA,
--- 	L_data    => std_logic_vector(dac_l),
--- 	R_data    => std_logic_vector(dac_r)
--- );		
+-- I2S audio
+audio_i2s: entity work.audio_top
+port map(
+	clk_50MHz => clock_50_i,
+	dac_MCLK  => I2S_MCLK,
+	dac_LRCK  => I2S_LRCLK,
+	dac_SCLK  => I2S_BCLK,
+	dac_SDIN  => I2S_DATA,
+--	L_data    => std_logic_vector(dac_l),
+--	R_data    => std_logic_vector(dac_r)
+	L_data    => std_logic_vector(dac_l_s),
+	R_data    => std_logic_vector(dac_r_s)
+);		
 
---audio_l_s <= '0' & DAC_L & "00000";
---audio_r_s <= '0' & DAC_R & "00000";
+	dac_l_s <= ('0' & dac_l & "00000");
+	dac_r_s <= ('0' & dac_r & "00000");
 
 	-- JOYSTICKS
 joy: joydecoder
@@ -233,11 +234,6 @@ joy: joydecoder
 		joy1right		=> joy1right,
 		joy1fire1		=> joy1fire1,
 		joy1fire2		=> joy1fire2,
-		joy2up  			=> joy2up,
-		joy2down			=> joy2down,
-		joy2left			=> joy2left,
-		joy2right		=> joy2right,
-		joy2fire1		=> joy2fire1,
 		joy2fire2		=> joy2fire2
 	);
 	
@@ -268,10 +264,10 @@ guest: COMPONENT  mist_top
 	--AUDIO
     AUDIO_L => SIGMA_L,
     AUDIO_R => SIGMA_R,
---	DAC_L   => dac_l,
---	DAC_R   => dac_r,
-	--ÉAR
-	UART_RX => AUDIO_INPUT,
+		DAC_L_O   => dac_l,
+		DAC_R_O   => dac_r,
+	--EAR
+	UART_RX  => AUDIO_INPUT,
 	--VGA
 	VGA_HS => vga_hsync,
 	VGA_VS => vga_vsync,
@@ -327,7 +323,9 @@ controller : entity work.substitute_mcu
 
 		-- UART
 		rxd => rs232_rxd,
-		txd => rs232_txd
+		txd => rs232_txd,
+		intercept => intercept
+
 );
 
 end rtl;

@@ -64,8 +64,8 @@ constant demistify_serialdebug : std_logic := '0';
 			VGA_B		:	 OUT STD_LOGIC_VECTOR(5 DOWNTO 0);
 			AUDIO_L  	: out std_logic;
 			AUDIO_R  	: out std_logic;
-			--	DAC_L     : OUT STD_LOGIC_VECTOR (15 DOWNTO 0);
-    		--	DAC_R     : OUT STD_LOGIC_VECTOR (15 DOWNTO 0);
+				DAC_L_O     : OUT STD_LOGIC_VECTOR (9 DOWNTO 0);
+    			DAC_R_O     : OUT STD_LOGIC_VECTOR (9 DOWNTO 0);
    			UART_RX 	: in std_logic;
     		LED 		: out std_logic
 		);

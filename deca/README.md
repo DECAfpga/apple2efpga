@@ -1,8 +1,6 @@
-# xxxxxxxxxxx DeMiSTified - Deca port
+# Apple 2 DeMiSTified - Deca port
 
-22/09/21 DECA port DeMiSTified by Somhic from original MiST xxxxx core https://github.com/mist-devel/xxxxxxx.   
-
-27/11/21 DECA port by Somhic from original Demistified MiST core https://github.com/robinsonb5/xxxxx by Alastair M. Robinson.
+22/09/21 DECA port DeMiSTified by Somhic from original MiST core https://github.com/gyurco/apple2efpga 
 
 Special thanks to Alastair M. Robinson creator of [DeMiSTify](https://github.com/robinsonb5/DeMiSTify) for helping me. 
 
@@ -10,17 +8,19 @@ Special thanks to Alastair M. Robinson creator of [DeMiSTify](https://github.com
 
 **Features for Deca board:**
 
-* HDMI video output (special resolution will not work on all LCD monitors)
+* ~~HDMI video output (special resolution will not work on all LCD monitors)~~
 * VGA 444 video output is available through GPIO (see pinout below). 
-* Audio Line out (3.5 jack green connector) and HDMI audio output
-* PWM audio is available through GPIO (see pinout below)
+* Audio Line out (3.5 jack green connector) ~~and HDMI audio output~~
+* ~~PWM audio is available through GPIO (see pinout below)~~
 * Joystick available through GPIO  (see pinout below).  **Joystick power pin must be 2.5 V**
   * **DANGER: Connecting power pin above 2.6 V may damage the FPGA**
   * This core was tested with a Megadrive 6 button gamepad. A permanent high level is applied on pin 7 of DB9, so only works buttons B and C.
 
 **Additional hardware required**:
 
-- SDRAM module. Tested with 32 MB SDRAM board for MiSTer (extra slim) XS_2.2 ([see connections](https://github.com/SoCFPGA-learning/DECA/tree/main/Projects/sdram_mister_deca))
+- SDRAM module
+  - ~~Tested with 32 MB SDRAM board for MiSTer (extra slim) XS_2.2 ([see connections](https://github.com/SoCFPGA-learning/DECA/tree/main/Projects/sdram_mister_deca))~~
+  - Tested with a dual memory module v1.3 with 3 pins ([see connections](https://github.com/SoCFPGA-learning/DECA/tree/main/Projects/sdram_mister_deca) + [3pins](https://github.com/DECAfpga/DECA_board/blob/main/Sdram_mister_deca/README_3pins.md))
 - PS/2 Keyboard connected to GPIO  (see pinout below)
 
 ##### Versions:
@@ -31,7 +31,7 @@ v0.1 VGA version only.
 
 * Working fine
 
-* HDMI video outputs special resolution so will not work on all monitors. 
+* ~~HDMI video outputs special resolution so will not work on all monitors.~~ 
 
 ### Instructions to compile the project for a specific board:
 
@@ -49,20 +49,18 @@ cp site.template site.mk
 gedit site.mk
 #Go back to root folder and do a make with board target (deca, neptuno, uareloaded, atlas_cyc). If not specified it will compile for all targets.
 cd ..
-make BOARD=neptuno
+make BOARD=deca
 #when asked just accept default settings with Enter key
 ```
 
 After that you can:
 
 * Flash bitstream directly from [command line](https://github.com/DECAfpga/DECA_binaries#flash-bitstream-to-fgpa-with-quartus)
-* Load project in Quartus from /deca/xxxxxxxx_deca.qpf
+* Load project in Quartus from /deca/apple2efpga_deca.qpf 
 
 ### Pinout connections:
 
 ![pinout_deca](pinout_deca.png)
-
-Mouse is not required to use this core
 
 For 444 video DAC use all VGA pins. For 333 video DAC connect MSB from addon to MSB of location assignment (e.g. connect pin VGAR2 from Waveshare addon to VGA_R[3] Deca pin).
 

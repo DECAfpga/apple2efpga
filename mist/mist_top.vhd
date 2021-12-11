@@ -66,7 +66,11 @@ entity mist_top is
     -- Audio
     AUDIO_L,
     AUDIO_R : out std_logic;
-    
+
+    -- I2S SOUND
+		DAC_L_O     : out std_logic_vector (9 downto 0);
+    DAC_R_O     : out std_logic_vector (9 downto 0);
+
     -- UART
 
     UART_RX : in std_logic;
@@ -509,6 +513,10 @@ begin
       dac_i 	=> std_logic_vector(psg_audio_r + (audio & "0000000")),
       dac_o 	=> AUDIO_R
       );
+
+  -- I2S output 
+  DAC_L_O <= std_logic_vector(psg_audio_l + (audio & "0000000"));
+  DAC_R_O <= std_logic_vector(psg_audio_r + (audio & "0000000"));
 
   user_io_d : user_io
     generic map (STRLEN => CONF_STR'length)
