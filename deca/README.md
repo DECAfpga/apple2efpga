@@ -38,20 +38,18 @@ v0.1 VGA version only.
 (Note that sof/svf files are already included in /deca/output_files/)
 
 ```sh
-git clone https://github.com/DECAfpga/xxxx
-cd xxxx
+git clone https://github.com/somhi/apple2efpga
+cd apple2efpga
 #Do a first make (will finish in error) but it will download missing submodules 
 make
 cd DeMiSTify
-#Checkout to somhic branch for the latest updates (if using decafpga forked demistify)
-git checkout somhic
 #Create file site.mk in DeMiSTify folder 
 cp site.template site.mk
 #Edit site.mk and add your own PATHs to Quartus (Q18)
 gedit site.mk
 #Go back to root folder and do a make with board target (deca, neptuno, uareloaded, atlas_cyc). If not specified it will compile for all targets.
 cd ..
-make BOARD=deca
+make BOARD=neptuno
 #when asked just accept default settings with Enter key
 ```
 

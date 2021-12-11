@@ -10,37 +10,37 @@ use work.demistify_config_pkg.all;
 entity neptuno_top is
 	port
 	(
-		clock_50_i	:	 IN STD_LOGIC;
-		LED         :   OUT STD_LOGIC;
+		clock_50_i		:	 IN STD_LOGIC;
+		LED        	 	:    OUT STD_LOGIC;
 		DRAM_CLK		:	 OUT STD_LOGIC;
 		DRAM_CKE		:	 OUT STD_LOGIC;
 		DRAM_ADDR		:	 OUT STD_LOGIC_VECTOR(12 DOWNTO 0);
-		DRAM_BA		:	 OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
-		DRAM_DQ		:	 INOUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		DRAM_BA			:	 OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+		DRAM_DQ			:	 INOUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		DRAM_LDQM		:	 OUT STD_LOGIC;
 		DRAM_UDQM		:	 OUT STD_LOGIC;
 		DRAM_CS_N		:	 OUT STD_LOGIC;
 		DRAM_WE_N		:	 OUT STD_LOGIC;
 		DRAM_CAS_N		:	 OUT STD_LOGIC;
 		DRAM_RAS_N		:	 OUT STD_LOGIC;
-		VGA_HS		:	 OUT STD_LOGIC;
-		VGA_VS		:	 OUT STD_LOGIC;
-		VGA_R		:	 OUT STD_LOGIC_VECTOR(4 DOWNTO 0);
-		VGA_G		:	 OUT STD_LOGIC_VECTOR(4 DOWNTO 0);
-		VGA_B		:	 OUT STD_LOGIC_VECTOR(4 DOWNTO 0);
+		VGA_HS			:	 OUT STD_LOGIC;
+		VGA_VS			:	 OUT STD_LOGIC;
+		VGA_R			:	 OUT STD_LOGIC_VECTOR(5 DOWNTO 0);
+		VGA_G			:	 OUT STD_LOGIC_VECTOR(5 DOWNTO 0);
+		VGA_B			:	 OUT STD_LOGIC_VECTOR(5 DOWNTO 0);
 		-- AUDIO
 		SIGMA_R                     : OUT STD_LOGIC;
 		SIGMA_L                     : OUT STD_LOGIC;
 		-- I2S audio		
 		I2S_BCLK				: out   std_logic								:= '0';
-		I2S_LRCLK			: out   std_logic								:= '0';
+		I2S_LRCLK				: out   std_logic								:= '0';
 		I2S_DATA				: out   std_logic								:= '0';		
       
 		-- JOYSTICK 
 		JOY_CLK				: out   std_logic;
 		JOY_LOAD 			: out   std_logic;
 		JOY_DATA 			: in    std_logic;
-		joyP7_o			   : out   std_logic								:= '1';
+		joyP7_o			    : out   std_logic								:= '1';
 
 		-- PS2
 		PS2_KEYBOARD_CLK            :    INOUT STD_LOGIC;
@@ -127,8 +127,8 @@ Port (
 end component;	
 
 -- DAC AUDIO     
-signal dac_l: signed(15 downto 0);
-signal dac_r: signed(15 downto 0);
+--signal dac_l: signed(15 downto 0);
+--signal dac_r: signed(15 downto 0);
 
 --signal audio_l_s			: std_logic_vector(15 downto 0);
 --signal audio_r_s			: std_logic_vector(15 downto 0);
@@ -157,18 +157,18 @@ end component;
 
 -- JOYSTICKS
 	signal joy1up			: std_logic								:= '1';
-	signal joy1down		: std_logic								:= '1';
-	signal joy1left		: std_logic								:= '1';
+	signal joy1down			: std_logic								:= '1';
+	signal joy1left			: std_logic								:= '1';
 	signal joy1right		: std_logic								:= '1';
 	signal joy1fire1		: std_logic								:= '1';
 	signal joy1fire2		: std_logic								:= '1';
 	signal joy2up			: std_logic								:= '1';
-	signal joy2down		: std_logic								:= '1';
-	signal joy2left		: std_logic								:= '1';
+	signal joy2down			: std_logic								:= '1';
+	signal joy2left			: std_logic								:= '1';
 	signal joy2right		: std_logic								:= '1';
 	signal joy2fire1		: std_logic								:= '1';
 	signal joy2fire2		: std_logic								:= '1';
-	signal clk_sys_out   : std_logic;
+	signal clk_sys_out   	: std_logic;
 	-- i2s 
 	signal i2s_mclk		    : std_logic;
 	
@@ -198,24 +198,24 @@ joyb<="11" & joy2fire2 & joy2fire1 & joy2right & joy2left & joy2down & joy2up;
 stm_rst_o <= '0';
 
 
-VGA_R<=vga_red(7 downto 3);
-VGA_G<=vga_green(7 downto 3);
-VGA_B<=vga_blue(7 downto 3);
+VGA_R<=vga_red(7 downto 2);
+VGA_G<=vga_green(7 downto 2);
+VGA_B<=vga_blue(7 downto 2);
 VGA_HS<=vga_hsync;
 VGA_VS<=vga_vsync;
 
 
--- I2S audio
-audio_i2s: entity work.audio_top
-port map(
-	clk_50MHz => clock_50_i,
-	dac_MCLK  => I2S_MCLK,
-	dac_LRCK  => I2S_LRCLK,
-	dac_SCLK  => I2S_BCLK,
-	dac_SDIN  => I2S_DATA,
-	L_data    => std_logic_vector(dac_l),
-	R_data    => std_logic_vector(dac_r)
-);		
+-- -- I2S audio
+-- audio_i2s: entity work.audio_top
+-- port map(
+-- 	clk_50MHz => clock_50_i,
+-- 	dac_MCLK  => I2S_MCLK,
+-- 	dac_LRCK  => I2S_LRCLK,
+-- 	dac_SCLK  => I2S_BCLK,
+-- 	dac_SDIN  => I2S_DATA,
+-- 	L_data    => std_logic_vector(dac_l),
+-- 	R_data    => std_logic_vector(dac_r)
+-- );		
 
 --audio_l_s <= '0' & DAC_L & "00000";
 --audio_r_s <= '0' & DAC_R & "00000";
@@ -288,9 +288,9 @@ sd_clk <= spi_clk_int;
 controller : entity work.substitute_mcu
 	generic map (
 		sysclk_frequency => 500,
+--		SPI_FASTBIT=>3,
 		debug => false,
 		jtag_uart => false
-		
 	)
 	port map (
 		clk => clock_50_i,
