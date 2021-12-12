@@ -1,4 +1,4 @@
-# Apple 2 DeMiSTified - Deca port
+# Apple//e DeMiSTified - Deca port
 
 22/09/21 DECA port DeMiSTified by Somhic from original MiST core https://github.com/gyurco/apple2efpga 
 
@@ -31,7 +31,7 @@ Special thanks to Alastair M. Robinson creator of [DeMiSTify](https://github.com
 
 ##### Versions:
 
-v0.1 VGA version only. 
+v0.5 new board Atlas_cyc
 
 ### STATUS
 
