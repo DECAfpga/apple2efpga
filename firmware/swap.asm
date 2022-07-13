@@ -182,6 +182,16 @@ _SwapBBBB:
 	mr	r0
 						// freereg r1
 						// freereg r3
+	.lipcrel	.functiontail, 4
+	add	r7
+
+.functiontail:
+	ldinc	r6
+	mr	r5
+
+	ldinc	r6
+	mr	r4
+
 	ldinc	r6
 	mr	r3
 
@@ -308,11 +318,8 @@ _SwapBB:
 	mr	r0
 						// freereg r1
 						// freereg r3
-	ldinc	r6
-	mr	r3
-
-	ldinc	r6
-	mr	r7
+	.lipcrel	.functiontail, 4
+	add	r7
 
 	//registers used:
 		//r1: yes
@@ -421,6 +428,11 @@ _SwapWW:
 						// freereg r2
 
 						//../DeMiSTify/firmware/swap.c, line 39
+						//FIXME convert
+						// (convert - reducing type 103 to 104
+						//No need to mask - same size
+
+						//../DeMiSTify/firmware/swap.c, line 39
 						// Q1 disposable
 						//setreturn
 						// (obj to r0) flags 4a type 104
@@ -430,9 +442,6 @@ _SwapWW:
 	mr	r0
 						// freereg r1
 						// freereg r3
-	ldinc	r6
-	mr	r3
-
-	ldinc	r6
-	mr	r7
+	.lipcrel	.functiontail, 4
+	add	r7
 

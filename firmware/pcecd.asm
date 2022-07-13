@@ -129,6 +129,16 @@ _bin2bcd:
 	mr	r0
 						// freereg r1
 						// freereg r3
+	.lipcrel	.functiontail, 4
+	add	r7
+
+.functiontail:
+	ldinc	r6
+	mr	r5
+
+	ldinc	r6
+	mr	r4
+
 	ldinc	r6
 	mr	r3
 
@@ -250,11 +260,8 @@ _bcd2bin:
 	mr	r0
 						// freereg r1
 						// freereg r3
-	ldinc	r6
-	mr	r3
-
-	ldinc	r6
-	mr	r7
+	.lipcrel	.functiontail, 4
+	add	r7
 
 	//registers used:
 		//r1: yes
@@ -422,11 +429,8 @@ l10: #
 	mr	r0
 						// freereg r2
 						// freereg r3
-	ldinc	r6
-	mr	r3
-
-	ldinc	r6
-	mr	r7
+	.lipcrel	.functiontail, 4
+	add	r7
 
 	//registers used:
 		//r1: yes
@@ -519,7 +523,7 @@ l13:
 	//registers used:
 		//r1: yes
 		//r2: yes
-		//r3: no
+		//r3: yes
 		//r4: no
 		//r5: no
 		//r6: yes
@@ -528,17 +532,19 @@ l13:
 	.section	.text.4
 l16:
 	stdec	r6
-						// allocreg r2
+	mt	r3
+	stdec	r6
+						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
 						// (a/p assign)
 						// (prepobj r0)
- 						// reg r2 - no need to prep
+ 						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type 102
 						// reg r1 - only match against tmp
 	mt	r1
 						// (save temp)isreg
-	mr	r2
+	mr	r3
 						//save_temp done
 						// freereg r1
 
@@ -595,74 +601,96 @@ l16:
 						// (obj to tmp) flags 42 type 102
 						// matchobj comparing flags 66 with 1
 						// matchobj comparing flags 66 with 1
-						// reg r2 - only match against tmp
-	mt	r2
+						// reg r3 - only match against tmp
+	mt	r3
 						// (save temp)isreg
 	mr	r1
 						//save_temp done
+						// allocreg r2
 
 						//../DeMiSTify/firmware/pcecd.c, line 150
-						// (bitwise/arithmetic) 	//ops: 2, 0, 1
-						// (obj to r0) flags 4a type 3
+						// (bitwise/arithmetic) 	//ops: 2, 0, 3
+						// (obj to r2) flags 4a type 3
 						// matchobj comparing flags 74 with 66
 						// matchobj comparing flags 74 with 1
 						// reg r1 - only match against tmp
 	//mt
-	mr	r0
+	mr	r2
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
 						// const
 						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
 	.liconst	8
 	sgn
-	shr	r0
-						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x21
-						// (prepobj tmp)
- 						// matchobj comparing flags 161 with 1
-						// deref
-						// const to tmp
-						// matchobj comparing flags 1 with 1
-	.liconst	-44
-	exg	r0
-	st	r0
-						// WARNING - Object is disposable, not bothering to undo exg - check correctness
+	shr	r2
+						// (save result) // isreg
 
 						//../DeMiSTify/firmware/pcecd.c, line 150
 						// Q1 disposable
-						// (bitwise/arithmetic) 	//ops: 2, 0, 1
-						// (obj to r0) flags 4a type 3
-						// reg r1 - only match against tmp
-	mt	r1
-	mr	r0
+						//FIXME convert
+						// (convert - reducing type 3 to 503
+						// (prepobj r0)
+ 						// matchobj comparing flags 161 with 1
+						// matchobj comparing flags 161 with 1
+						// deref
+						// const to r0
+						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
+						// (obj to tmp) flags 4a type 3
+						// matchobj comparing flags 74 with 1
+						// matchobj comparing flags 74 with 1
+						// reg r2 - only match against tmp
+	mt	r2
+						// (save temp)store type 3
+	st	r0
+						//save_temp done
+						// freereg r2
+
+						//../DeMiSTify/firmware/pcecd.c, line 150
+						// (bitwise/arithmetic) 	//ops: 2, 0, 2
+						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
 						// const
 						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
-	.liconst	255
-	and	r0
-						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x21
-						// (prepobj tmp)
- 						// matchobj comparing flags 161 with 1
-						// deref
-						// const to tmp
 						// matchobj comparing flags 1 with 1
-	.liconst	-44
-	exg	r0
+	.liconst	255
+	and	r1
+						// (save result) // isreg
+
+						//../DeMiSTify/firmware/pcecd.c, line 150
+						// Q1 disposable
+						//FIXME convert
+						// (convert - reducing type 3 to 503
+						// (prepobj r0)
+ 						// matchobj comparing flags 161 with 1
+						// matchobj comparing flags 161 with 1
+						// deref
+						// const to r0
+						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
+						// (obj to tmp) flags 4a type 3
+						// matchobj comparing flags 74 with 1
+						// matchobj comparing flags 74 with 1
+						// reg r1 - only match against tmp
+	mt	r1
+						// (save temp)store type 3
 	st	r0
-						// WARNING - Object is disposable, not bothering to undo exg - check correctness
+						//save_temp done
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 151
 						// (a/p assign)
 						// (prepobj r0)
- 						// deref
+ 						// matchobj comparing flags 161 with 74
+						// matchobj comparing flags 161 with 1
+						// deref
 						// const to r0
+						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
 	.liconst	-48
 	mr	r0
 						// (obj to tmp) flags 1 type 503
@@ -675,9 +703,9 @@ l16:
 						// (save temp)store type 3
 	st	r0
 						//save_temp done
-						// freereg r2
-	ldinc	r6
-	mr	r7
+						// freereg r3
+	.lipcrel	.functiontail, 4
+	add	r7
 
 	//registers used:
 		//r1: yes
@@ -698,7 +726,7 @@ l19:
 						// (a/p assign)
 						// (prepobj tmp)
  						// static
-	.liabs	l12,62
+	.liabs	l12,58
 						// static pe not varadr
 						//sizemod based on type 0x102
 	hlf
@@ -708,7 +736,7 @@ l19:
 						// (a/p assign)
 						// (prepobj r0)
  						// static
-	.liabs	l12,12
+	.liabs	l12,10
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 3
@@ -815,47 +843,65 @@ l22:
 						// (save temp)isreg
 	mr	r1
 						//save_temp done
+						// allocreg r2
 
 						//../DeMiSTify/firmware/pcecd.c, line 163
-						// (bitwise/arithmetic) 	//ops: 2, 0, 1
-						// (obj to r0) flags 4a type 3
+						// (bitwise/arithmetic) 	//ops: 2, 0, 3
+						// (obj to r2) flags 4a type 3
 						// matchobj comparing flags 74 with 2
 						// matchobj comparing flags 74 with 1
 						// reg r1 - only match against tmp
 	//mt
-	mr	r0
+	mr	r2
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
 						// const
 						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
-	.liconst	255
-	and	r0
-						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x21
-						// (prepobj tmp)
- 						// matchobj comparing flags 161 with 1
-						// deref
-						// const to tmp
 						// matchobj comparing flags 1 with 1
-	.liconst	-44
-	exg	r0
+	.liconst	255
+	and	r2
+						// (save result) // isreg
+
+						//../DeMiSTify/firmware/pcecd.c, line 163
+						// Q1 disposable
+						//FIXME convert
+						// (convert - reducing type 3 to 503
+						// (prepobj r0)
+ 						// matchobj comparing flags 161 with 1
+						// matchobj comparing flags 161 with 1
+						// deref
+						// const to r0
+						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
+						// (obj to tmp) flags 4a type 3
+						// matchobj comparing flags 74 with 1
+						// matchobj comparing flags 74 with 1
+						// reg r2 - only match against tmp
+	mt	r2
+						// (save temp)store type 3
 	st	r0
-						// WARNING - Object is disposable, not bothering to undo exg - check correctness
+						//save_temp done
+						// freereg r2
 						// allocreg r2
 
 						//../DeMiSTify/firmware/pcecd.c, line 164
 						// (bitwise/arithmetic) 	//ops: 0, 0, 3
 						// (obj to r2) flags 2 type 102
+						// matchobj comparing flags 2 with 74
+						// matchobj comparing flags 2 with 1
 						// var, auto|reg
+						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
 	.liconst	12
 	ldidx	r6
 	mr	r2
 						// (obj to tmp) flags 1 type 102
 						// matchobj comparing flags 1 with 2
+						// matchobj comparing flags 1 with 1
 						// const
 						// matchobj comparing flags 1 with 2
+						// matchobj comparing flags 1 with 1
 	.liconst	8
 	shr	r2
 						// (save result) // isreg
@@ -865,7 +911,9 @@ l22:
 						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
 						// const
+						// matchobj comparing flags 1 with 1
 						// matchobj comparing flags 1 with 1
 	.liconst	255
 	and	r2
@@ -880,7 +928,9 @@ l22:
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 2 type 101
 						// matchobj comparing flags 2 with 1
+						// matchobj comparing flags 2 with 1
 						// var, auto|reg
+						// matchobj comparing flags 1 with 1
 						// matchobj comparing flags 1 with 1
 	.liconst	16
 	ldidx	r6
@@ -893,39 +943,46 @@ l22:
 						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 2
+						// matchobj comparing flags 1 with 1
 						// const
 						// matchobj comparing flags 1 with 2
+						// matchobj comparing flags 1 with 1
 	.liconst	7
 	shl	r3
 						// (save result) // isreg
 
 						//../DeMiSTify/firmware/pcecd.c, line 164
 						// Q1 disposable
-						// Q2 disposable
-						// (bitwise/arithmetic) 	//ops: 4, 3, 1
-						// (obj to r0) flags 4a type 3
+						// (bitwise/arithmetic) 	//ops: 4, 3, 3
+						// WARNING - q1 and target collision - check code for correctness.
+						// (obj to tmp) flags 4a type 3
+						// matchobj comparing flags 74 with 1
 						// matchobj comparing flags 74 with 1
 						// reg r3 - only match against tmp
 	mt	r3
-	mr	r0
+	or	r2
+						// (save result) // isreg
+						// freereg r3
+
+						//../DeMiSTify/firmware/pcecd.c, line 164
+						// Q1 disposable
+						//FIXME convert
+						// (convert - reducing type 3 to 503
+						// (prepobj r0)
+ 						// matchobj comparing flags 161 with 74
+						// matchobj comparing flags 161 with 1
+						// deref
+						// const to r0
+						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
 						// (obj to tmp) flags 4a type 3
 						// matchobj comparing flags 74 with 74
-						// matchobj comparing flags 74 with 74
+						// matchobj comparing flags 74 with 1
 						// reg r2 - only match against tmp
 	mt	r2
-	or	r0
-						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x21
-						// (prepobj tmp)
- 						// matchobj comparing flags 161 with 74
-						// deref
-						// const to tmp
-						// matchobj comparing flags 1 with 74
-	.liconst	-44
-	exg	r0
+						// (save temp)store type 3
 	st	r0
-						// WARNING - Object is disposable, not bothering to undo exg - check correctness
-						// freereg r3
+						//save_temp done
 						// freereg r2
 
 						//../DeMiSTify/firmware/pcecd.c, line 165
@@ -933,6 +990,8 @@ l22:
 						// (a/p push)
 						// a: pushed 0, regnames[sp] r6
 						// (obj to tmp) flags 4a type 3
+						// matchobj comparing flags 74 with 74
+						// matchobj comparing flags 74 with 1
 						// reg r1 - only match against tmp
 	mt	r1
 	stdec	r6
@@ -945,6 +1004,7 @@ l22:
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type a
 						// matchobj comparing flags 66 with 74
+						// matchobj comparing flags 66 with 1
 						// reg r4 - only match against tmp
 	mt	r4
 						// (save temp)isreg
@@ -977,25 +1037,16 @@ l22:
 	st	r0
 						//save_temp done
 						// freereg r4
-						// matchobj comparing flags 1 with 1
-						// matchobj comparing flags 1 with 1
-	.liconst	-4
-	sub	r6
-	ldinc	r6
-	mr	r4
-
-	ldinc	r6
-	mr	r3
-
-	ldinc	r6
-	mr	r7
+	ldinc	r6	// shortest way to add 4 to sp
+	.lipcrel	.functiontail, 2
+	add	r7
 
 	//registers used:
 		//r1: yes
 		//r2: yes
 		//r3: yes
 		//r4: yes
-		//r5: yes
+		//r5: no
 		//r6: yes
 		//r7: yes
 		//tmp: yes
@@ -1005,7 +1056,6 @@ l25:
 	stmpdec	r6
 	stmpdec	r3
 	stmpdec	r4
-	stmpdec	r5
 	exg	r6
 						// allocreg r3
 						// allocreg r1
@@ -1020,42 +1070,29 @@ l25:
 	mr	r3
 						//save_temp done
 						// freereg r1
-						// allocreg r5
 						// allocreg r4
-						// (a/p assign)
-						// (prepobj r0)
- 						// reg r4 - no need to prep
-						// (obj to tmp) flags 102 type 3
-						// matchobj comparing flags 258 with 64
-						// var, auto|reg
-						// matchobj comparing flags 1 with 64
-	.liconst	16
-	ldidx	r6
-						// (save temp)isreg
-	mr	r4
-						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 171
 						// (a/p assign)
 						// (prepobj r0)
- 						// reg r5 - no need to prep
+ 						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 3
-						// matchobj comparing flags 1 with 258
+						// matchobj comparing flags 1 with 64
 						// const
-						// matchobj comparing flags 1 with 258
+						// matchobj comparing flags 1 with 64
 	.liconst	0
 						// (save temp)isreg
-	mr	r5
+	mr	r4
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 173
 						// (test)
-						// (obj to tmp) flags 42 type 3
-						// matchobj comparing flags 66 with 1
-						// reg r4 - only match against tmp
-	mt	r4
-				// flags 42
-	and	r4
+						// (obj to tmp) flags 2 type 3
+						// matchobj comparing flags 2 with 1
+						// var, auto|reg
+						// matchobj comparing flags 1 with 1
+	.liconst	12
+	ldidx	r6
 
 						//../DeMiSTify/firmware/pcecd.c, line 173
 	cond	EQ
@@ -1195,36 +1232,57 @@ l33: #
 
 						//../DeMiSTify/firmware/pcecd.c, line 179
 						// Q1 disposable
-						// (bitwise/arithmetic) 	//ops: 2, 6, 6
+						// (bitwise/arithmetic) 	//ops: 2, 5, 5
 						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 4a type 3
 						// matchobj comparing flags 74 with 74
 						// reg r1 - only match against tmp
 	mt	r1
-	xor	r5
+	xor	r4
 						// (save result) // isreg
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 180
-						// (bitwise/arithmetic) 	//ops: 5, 0, 5
-						// WARNING - q1 and target collision - check code for correctness.
+						// (bitwise/arithmetic) 	//ops: 0, 0, 1
+						// (obj to r0) flags 2 type 3
+						// matchobj comparing flags 2 with 74
+						// var, auto|reg
+						// matchobj comparing flags 1 with 74
+	.liconst	12
+	ldidx	r6
+	mr	r0
 						// (obj to tmp) flags 1 type 3
-						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 2
+						// matchobj comparing flags 1 with 2
 						// const
-						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 2
+						// matchobj comparing flags 1 with 2
 	.liconst	4
-	sub	r4
-						// (save result) // isreg
+	sub	r0
+						// (save result) // not reg
+						// Store_reg to type 0x3, flags 0x2
+						// (prepobj tmp)
+ 						// var, auto|reg
+						// matchobj comparing flags 1 with 1
+	.liconst	16
+	addt	r6
+	stmpdec	r0
+ 						// WARNING - check that 4 has been added.
 
 						//../DeMiSTify/firmware/pcecd.c, line 181
 						// (compare) (q1 signed) (q2 signed)
+						// (obj to r0) flags 2 type 3
+						// matchobj comparing flags 2 with 130
+						// matchobj comparing flags 2 with 2
+
+			// required value found in r0
 						// (obj to tmp) flags 1 type 3
-						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 130
 						// const
-						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 130
 	.liconst	0
 	sgn
-	cmp	r4
+	cmp	r0
 
 						//../DeMiSTify/firmware/pcecd.c, line 181
 	cond	GE
@@ -1236,23 +1294,31 @@ l33: #
 						//../DeMiSTify/firmware/pcecd.c, line 182
 						// (a/p assign)
 						// (prepobj r0)
- 						// reg r4 - no need to prep
-						// (obj to tmp) flags 1 type 3
+ 						// matchobj comparing flags 130 with 1
+						// var, auto|reg
 						// matchobj comparing flags 1 with 1
+	.liconst	12
+	addt	r6
+	mr	r0
 
-			// required value found in tmp
-						// (save temp)isreg
-	mr	r4
+						// (obj to tmp) flags 1 type 3
+						// matchobj comparing flags 1 with 130
+						// matchobj comparing flags 1 with 130
+						// const
+						// matchobj comparing flags 1 with 130
+						// matchobj comparing flags 1 with 130
+	.liconst	0
+						// (save temp)store type 3
+	st	r0
 						//save_temp done
 l32: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 173
 						// (test)
-						// (obj to tmp) flags 42 type 3
-						// reg r4 - only match against tmp
-	mt	r4
-				// flags 42
-	and	r4
+						// (obj to tmp) flags 2 type 3
+						// var, auto|reg
+	.liconst	12
+	ldidx	r6
 
 						//../DeMiSTify/firmware/pcecd.c, line 173
 	cond	NEQ
@@ -1266,23 +1332,13 @@ l34: #
 						// Q1 disposable
 						//setreturn
 						// (obj to r0) flags 42 type 3
-						// reg r5 - only match against tmp
-	mt	r5
+						// reg r4 - only match against tmp
+	mt	r4
 	mr	r0
 						// freereg r3
 						// freereg r4
-						// freereg r5
-	ldinc	r6
-	mr	r5
-
-	ldinc	r6
-	mr	r4
-
-	ldinc	r6
-	mr	r3
-
-	ldinc	r6
-	mr	r7
+	.lipcrel	.functiontail, 2
+	add	r7
 
 	//registers used:
 		//r1: yes
@@ -1333,7 +1389,7 @@ l35:
 						// matchobj comparing flags 2 with 2
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,24
+	.liabs	l12,21
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -1746,11 +1802,8 @@ l45: #
 						// allocreg r1
 						// freereg r1
 						// freereg r3
-	ldinc	r6
-	mr	r3
-
-	ldinc	r6
-	mr	r7
+	.lipcrel	.functiontail, 4
+	add	r7
 
 	//registers used:
 		//r1: yes
@@ -1914,28 +1967,16 @@ l47: #
 		//r1: yes
 		//r2: yes
 		//r3: yes
-		//r4: yes
+		//r4: no
 		//r5: no
 		//r6: yes
 		//r7: yes
 		//tmp: yes
 	.section	.text.a
 l52:
-	exg	r6
-	stmpdec	r6
-	stmpdec	r3
-	stmpdec	r4
-	exg	r6
-						// allocreg r4
-						// (a/p assign)
-						// (prepobj r0)
- 						// reg r4 - no need to prep
-						// (obj to tmp) flags 1 type 3
-						// const
-	.liconst	2352
-						// (save temp)isreg
-	mr	r4
-						//save_temp done
+	stdec	r6
+	mt	r3
+	stdec	r6
 						// allocreg r3
 						// allocreg r2
 						// allocreg r1
@@ -1943,7 +1984,6 @@ l52:
 						//../DeMiSTify/firmware/pcecd.c, line 233
 						// (compare) (q1 unsigned) (q2 unsigned)
 						// (obj to r0) flags 2 type 103
-						// matchobj comparing flags 2 with 1
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
 	.liabs	l12,0
@@ -1968,20 +2008,23 @@ l52:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 234
-						// (a/p assign)
+						//FIXME convert
+						// (convert - reducing type 104 to 103
 						// (prepobj r0)
  						// reg r1 - no need to prep
-						// (obj to tmp) flags 2 type 103
+						// (obj to tmp) flags 2 type 104
 						// matchobj comparing flags 2 with 1
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
 	.liabs	l51,0
 						//static deref
-						//sizemod based on type 0x103
+						//sizemod based on type 0x104
 	ldt
+						//Saving to reg r1
 						// (save temp)isreg
 	mr	r1
 						//save_temp done
+						//No need to mask - same size
 
 						//../DeMiSTify/firmware/pcecd.c, line 234
 						//call
@@ -2029,22 +2072,29 @@ l52:
 	add	r7
 						// Flow control - popping 0 + 0 bytes
 						// freereg r1
+						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 235
-						// (getreturn)						// (save result) // not reg
-						// Store_reg to type 0x103, flags 0x2
+						// (getreturn)						// (save result) // isreg
+	mt	r0
+	mr	r1
+
+						//../DeMiSTify/firmware/pcecd.c, line 235
+						// Q1 disposable
+						//FIXME convert
+						// (convert - reducing type 103 to 104
 						// (prepobj tmp)
  						// static
 	.liabs	l51,4
 						// static pe not varadr
-	stmpdec	r0
- 						// WARNING - check that 4 has been added.
+						//sizemod based on type 0x104
+	stmpdec	r1
+						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 236
 						// (bitwise/arithmetic) 	//ops: 0, 0, 1
 						// (obj to r0) flags 2 type 103
 						// matchobj comparing flags 2 with 130
-						// matchobj comparing flags 2 with 2
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
 	.liabs	l12,0
@@ -2116,7 +2166,7 @@ l56: #
 						// matchobj comparing flags 2 with 1
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,20
+	.liabs	l12,17
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -2169,7 +2219,7 @@ l62: #
 						// (obj to tmp) flags 2 type 101
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,17
+	.liabs	l12,15
 						//static deref
 						//sizemod based on type 0x101
 	byt
@@ -2313,7 +2363,7 @@ l66: #
 						// (a/p assign)
 						// (prepobj r0)
  						// static
-	.liabs	l12,17
+	.liabs	l12,15
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 101
@@ -2398,7 +2448,7 @@ l68: #
 						// (obj to r0) flags 2 type 3
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,24
+	.liabs	l12,21
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -2446,7 +2496,7 @@ l71: #
 						// (obj to r0) flags 2 type 3
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,28
+	.liabs	l12,25
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -2463,7 +2513,7 @@ l71: #
 						// Store_reg to type 0x3, flags 0x2
 						// (prepobj tmp)
  						// static
-	.liabs	l12,32
+	.liabs	l12,29
 						// static pe not varadr
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -2539,7 +2589,7 @@ l73: #
 						// (obj to r0) flags 2 type 3
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,24
+	.liabs	l12,21
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -2556,7 +2606,7 @@ l73: #
 						// Store_reg to type 0x3, flags 0x2
 						// (prepobj tmp)
  						// static
-	.liabs	l12,28
+	.liabs	l12,25
 						// static pe not varadr
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -2592,7 +2642,7 @@ l73: #
 						// matchobj comparing flags 2 with 2
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,20
+	.liabs	l12,17
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -2609,7 +2659,7 @@ l73: #
 						// Store_reg to type 0x3, flags 0x2
 						// (prepobj tmp)
  						// static
-	.liabs	l12,24
+	.liabs	l12,21
 						// static pe not varadr
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -2656,19 +2706,38 @@ l73: #
 	stbinc	r0
 						//Disposable, postinc doesn't matter.
 						//save_temp done
+						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 287
-						// (a/p push)
-						// a: pushed 0, regnames[sp] r6
-						// (obj to tmp) flags 2 type 103
+						//FIXME convert
+						// (convert - reducing type 3 to 103
+						// (prepobj r0)
+ 						// reg r1 - no need to prep
+						// (obj to tmp) flags 2 type 3
 						// matchobj comparing flags 2 with 1
 						// matchobj comparing flags 2 with 130
 						// extern
 	.liabs	_toc, 12
 						//extern deref
-						//sizemod based on type 0x103
+						//sizemod based on type 0x3
 	ldt
+						//Saving to reg r1
+						// (save temp)isreg
+	mr	r1
+						//save_temp done
+						//No need to mask - same size
+
+						//../DeMiSTify/firmware/pcecd.c, line 287
+						// Q1 disposable
+						// (a/p push)
+						// a: pushed 0, regnames[sp] r6
+						// (obj to tmp) flags 4a type 103
+						// matchobj comparing flags 74 with 2
+						// matchobj comparing flags 74 with 130
+						// reg r1 - only match against tmp
+	//mt
 	stdec	r6
+						// freereg r1
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 287
@@ -2676,10 +2745,10 @@ l73: #
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
-						// matchobj comparing flags 130 with 2
+						// matchobj comparing flags 130 with 74
 						// matchobj comparing flags 130 with 130
 						// (prepobj tmp)
- 						// matchobj comparing flags 130 with 2
+ 						// matchobj comparing flags 130 with 74
 						// matchobj comparing flags 130 with 130
 						// extern (offset 36)
 	.liabs	_toc, 36
@@ -2854,7 +2923,7 @@ l80: #
 						// (obj to tmp) flags 2 type 3
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,24
+	.liabs	l12,21
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -2875,7 +2944,7 @@ l80: #
 						// Store_reg to type 0x3, flags 0x2
 						// (prepobj tmp)
  						// static
-	.liabs	l12,24
+	.liabs	l12,21
 						// static pe not varadr
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -2887,7 +2956,7 @@ l80: #
 						// matchobj comparing flags 2 with 2
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,18
+	.liabs	l12,16
 						//static deref
 						//sizemod based on type 0x101
 	byt
@@ -2923,7 +2992,7 @@ l80: #
 						// matchobj comparing flags 2 with 2
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,52
+	.liabs	l12,49
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -2968,7 +3037,7 @@ l98: #
 						// matchobj comparing flags 2 with 2
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,24
+	.liabs	l12,21
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -2984,12 +3053,13 @@ l98: #
 						// (save result) // isreg
 
 						//../DeMiSTify/firmware/pcecd.c, line 305
-						// (bitwise/arithmetic) 	//ops: 2, 5, 2
+						// (bitwise/arithmetic) 	//ops: 2, 0, 2
 						// WARNING - q1 and target collision - check code for correctness.
-						// (obj to tmp) flags 240 type 3
-						// matchobj comparing flags 576 with 2
-						// reg r4 - only match against tmp
-	mt	r4
+						// (obj to tmp) flags 1 type 3
+						// matchobj comparing flags 1 with 2
+						// const
+						// matchobj comparing flags 1 with 2
+	.liconst	2352
 	mul	r1
 						// (save result) // isreg
 
@@ -3004,6 +3074,11 @@ l98: #
 	ldt
 	add	r1
 						// (save result) // isreg
+
+						//../DeMiSTify/firmware/pcecd.c, line 305
+						//FIXME convert
+						// (convert - reducing type 3 to 103
+						//No need to mask - same size
 
 						//../DeMiSTify/firmware/pcecd.c, line 305
 						// Q1 disposable
@@ -3053,10 +3128,11 @@ l98: #
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r1 - no need to prep
-						// (obj to tmp) flags 240 type 3
-						// matchobj comparing flags 576 with 1
-						// reg r4 - only match against tmp
-	mt	r4
+						// (obj to tmp) flags 1 type 3
+						// matchobj comparing flags 1 with 1
+						// const
+						// matchobj comparing flags 1 with 1
+	.liconst	2352
 						// (save temp)isreg
 	mr	r1
 						//save_temp done
@@ -3078,7 +3154,7 @@ l88: #
 						// (obj to r0) flags 2 type 3
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,24
+	.liabs	l12,21
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -3095,7 +3171,7 @@ l88: #
 						// Store_reg to type 0x3, flags 0x2
 						// (prepobj tmp)
  						// static
-	.liabs	l12,28
+	.liabs	l12,25
 						// static pe not varadr
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -3120,7 +3196,7 @@ l88: #
 						// matchobj comparing flags 2 with 2
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,52
+	.liabs	l12,49
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -3139,7 +3215,7 @@ l99: #
 						// (a/p assign)
 						// (prepobj r0)
  						// static
-	.liabs	l12,52
+	.liabs	l12,49
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 3
@@ -3160,7 +3236,7 @@ l99: #
 						// matchobj comparing flags 2 with 130
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,24
+	.liabs	l12,21
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -3169,7 +3245,7 @@ l99: #
 						// matchobj comparing flags 2 with 2
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,48
+	.liabs	l12,45
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -3206,7 +3282,7 @@ l99: #
 						// matchobj comparing flags 2 with 2
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,20
+	.liabs	l12,17
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -3240,7 +3316,7 @@ l89: #
 						// (obj to tmp) flags 2 type 101
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,56
+	.liabs	l12,53
 						//static deref
 						//sizemod based on type 0x101
 	byt
@@ -3273,7 +3349,7 @@ l89: #
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// static
-	.liabs	l12,24
+	.liabs	l12,21
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 2 type 3
@@ -3281,7 +3357,7 @@ l89: #
 						// matchobj comparing flags 2 with 130
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,44
+	.liabs	l12,41
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -3346,7 +3422,7 @@ l95: #
 						// (obj to tmp) flags 2 type 101
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,56
+	.liabs	l12,53
 						//static deref
 						//sizemod based on type 0x101
 	byt
@@ -3399,15 +3475,8 @@ l97: #
 						// freereg r1
 						// freereg r2
 						// freereg r3
-						// freereg r4
-	ldinc	r6
-	mr	r4
-
-	ldinc	r6
-	mr	r3
-
-	ldinc	r6
-	mr	r7
+	.lipcrel	.functiontail, 4
+	add	r7
 
 	//registers used:
 		//r1: yes
@@ -3520,43 +3589,45 @@ l100:
 						//../DeMiSTify/firmware/pcecd.c, line 347
 						// (a/p assign)
 						// (prepobj r0)
- 						// reg r5 - no need to prep
-						// (obj to tmp) flags 1 type 3
+ 						// matchobj comparing flags 130 with 1
+						// matchobj comparing flags 130 with 1
+						// var, auto|reg
 						// matchobj comparing flags 1 with 1
 						// matchobj comparing flags 1 with 1
-						// const
-						// matchobj comparing flags 1 with 1
-						// matchobj comparing flags 1 with 1
-	.liconst	0
-						// (save temp)isreg
-	mr	r5
-						//save_temp done
-						// (a/p assign)
-						// (prepobj r0)
- 						// reg r4 - no need to prep
-						// (obj to tmp) flags 1 type 1000a
-						// matchobj comparing flags 1 with 1
-						// matchobj comparing flags 1 with 1
+	.liconst	32
+	addt	r6
+	mr	r0
 
-			// required value found in r0
-	mt	r0
-				//return 0
-						// (save temp)isreg
-	mr	r4
+						// (obj to tmp) flags 1 type 3
+						// matchobj comparing flags 1 with 130
+						// matchobj comparing flags 1 with 130
+						// const
+						// matchobj comparing flags 1 with 130
+						// matchobj comparing flags 1 with 130
+	.liconst	0
+						// (save temp)store type 3
+	st	r0
 						//save_temp done
+l176: # 
 						// allocreg r3
 						// allocreg r2
-l103: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 348
 						// (a/p assign)
 						// (prepobj r0)
- 						// reg r4 - no need to prep
+ 						// deref
+						// const to r0
+	.liconst	-44
+	mr	r0
 						// (obj to tmp) flags 1 type 503
+						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
 						// const
+						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
 	.liconst	0
 						// (save temp)store type 3
-	st	r4
+	st	r0
 						//save_temp done
 						// allocreg r1
 
@@ -3564,21 +3635,28 @@ l103: #
 						// (address)
 						// (prepobj tmp)
  						// matchobj comparing flags 130 with 1
+						// matchobj comparing flags 130 with 1
 						// var, auto|reg
 						// matchobj comparing flags 1 with 1
-	.liconst	32
+						// matchobj comparing flags 1 with 1
+	.liconst	36
 	addt	r6
 						// (save temp)isreg
 	mr	r1
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 348
-						// (bitwise/arithmetic) 	//ops: 2, 6, 2
+						// (bitwise/arithmetic) 	//ops: 2, 0, 2
 						// WARNING - q1 and target collision - check code for correctness.
-						// (obj to tmp) flags 42 type a
-						// matchobj comparing flags 66 with 130
-						// reg r5 - only match against tmp
-	mt	r5
+						// (obj to tmp) flags 2 type a
+						// matchobj comparing flags 2 with 130
+						// matchobj comparing flags 2 with 1
+						// var, auto|reg
+						// matchobj comparing flags 1 with 130
+						// matchobj comparing flags 1 with 1
+	.liconst	32
+						//sizemod based on type 0xa
+	ldidx	r6
 	add	r1
 						// (save result) // isreg
 
@@ -3588,10 +3666,14 @@ l103: #
 						// (convert - reducing type 503 to 101
 						// (prepobj r0)
  						// reg r1 - no need to prep
-						// (obj to tmp) flags 260 type 503
-						// matchobj comparing flags 608 with 66
-						// deref 
-	ld	r4
+						// (obj to tmp) flags 21 type 503
+						// matchobj comparing flags 33 with 2
+						// matchobj comparing flags 33 with 1
+						// const/deref
+						// matchobj comparing flags 1 with 2
+						// matchobj comparing flags 1 with 1
+						//sizemod based on type 0x503
+	ld	r0
 						//Saving to reg r0
 						// (save temp)store type 1
 	stbinc	r1
@@ -3600,31 +3682,55 @@ l103: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 348
-						// (bitwise/arithmetic) 	//ops: 6, 0, 6
-						// WARNING - q1 and target collision - check code for correctness.
+						// (bitwise/arithmetic) 	//ops: 0, 0, 1
+						// (obj to r0) flags 2 type 3
+						// matchobj comparing flags 2 with 33
+						// matchobj comparing flags 2 with 1
+						// var, auto|reg
+						// matchobj comparing flags 1 with 33
+						// matchobj comparing flags 1 with 1
+	.liconst	32
+						//sizemod based on type 0x3
+	ldidx	r6
+	mr	r0
 						// (obj to tmp) flags 1 type 3
-						// matchobj comparing flags 1 with 608
+						// matchobj comparing flags 1 with 2
+						// matchobj comparing flags 1 with 2
 						// const
-						// matchobj comparing flags 1 with 608
+						// matchobj comparing flags 1 with 2
+						// matchobj comparing flags 1 with 2
 	.liconst	1
-	add	r5
-						// (save result) // isreg
+	add	r0
+						// (save result) // not reg
+						// Store_reg to type 0x3, flags 0x2
+						// (prepobj tmp)
+ 						// var, auto|reg
+						// matchobj comparing flags 1 with 1
+	.liconst	36
+	addt	r6
+	stmpdec	r0
+ 						// WARNING - check that 4 has been added.
 
 						//../DeMiSTify/firmware/pcecd.c, line 348
 						// (compare) (q1 signed) (q2 signed)
+						// (obj to r0) flags 2 type 3
+						// matchobj comparing flags 2 with 130
+						// matchobj comparing flags 2 with 2
+
+			// required value found in r0
 						// (obj to tmp) flags 1 type 3
-						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 130
 						// const
-						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 130
 	.liconst	12
 	sgn
-	cmp	r5
+	cmp	r0
 
 						//../DeMiSTify/firmware/pcecd.c, line 348
 	cond	SLT
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l103
+	.lipcrel	l176
 		add	r7
 						// allocreg r1
 
@@ -3660,7 +3766,7 @@ l103: #
 						// var, auto|reg
 						// matchobj comparing flags 1 with 1
 						// matchobj comparing flags 1 with 1
-	.liconst	32
+	.liconst	36
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -4239,7 +4345,7 @@ l112: #
 						// matchobj comparing flags 2 with 74
 						// var, auto|reg
 						// matchobj comparing flags 1 with 74
-	.liconst	33
+	.liconst	37
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -4250,7 +4356,7 @@ l112: #
  						// var, auto|reg
 						// matchobj comparing flags 1 with 2
 						// matchobj comparing flags 1 with 2
-	.liconst	48
+	.liconst	36
 	addt	r6
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -4290,7 +4396,7 @@ l112: #
 						// (prepobj tmp)
  						// var, auto|reg
 						// matchobj comparing flags 1 with 1
-	.liconst	48
+	.liconst	36
 	addt	r6
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -4330,7 +4436,7 @@ l112: #
 						// (prepobj tmp)
  						// var, auto|reg
 						// matchobj comparing flags 1 with 1
-	.liconst	48
+	.liconst	36
 	addt	r6
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -4445,7 +4551,7 @@ l116: #
 						// (a/p assign)
 						// (prepobj r0)
  						// var, auto|reg
-	.liconst	44
+	.liconst	32
 	addt	r6
 	mr	r0
 
@@ -4691,9 +4797,9 @@ l118: #
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
-						//auto: flags: 82, comparing 44, 0 with 0, 6
-						//Fuzzy match found, offset: 38 (varadr: 1)
-	.liconst	38
+						//auto: flags: 82, comparing 32, 0 with 0, 6
+						//Fuzzy match found, offset: 26 (varadr: 1)
+	.liconst	26
 	add	r0
 
 						// required value found in r0
@@ -4723,7 +4829,7 @@ l119: #
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 101
 						// var, auto|reg
-	.liconst	34
+	.liconst	38
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -4974,10 +5080,10 @@ l119: #
 						// (a/p assign)
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 130
-						//auto: flags: 82, comparing 44, 0 with 0, 5
+						//auto: flags: 82, comparing 32, 0 with 0, 5
 						// Fuzzy match found against tmp.
 	mr	r0
-	.liconst	39
+	.liconst	27
 	add	r0
 
 						// required value found in r0
@@ -5009,7 +5115,7 @@ l115: #
 						// matchobj comparing flags 2 with 1
 						// var, auto|reg
 						// matchobj comparing flags 1 with 1
-	.liconst	48
+	.liconst	36
 						//sizemod based on type 0x3
 	ldidx	r6
 	stdec	r6
@@ -5101,7 +5207,7 @@ l120: #
 						// matchobj comparing flags 2 with 74
 						// var, auto|reg
 						// matchobj comparing flags 1 with 74
-	.liconst	33
+	.liconst	37
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -5131,7 +5237,7 @@ l120: #
 						// matchobj comparing flags 2 with 1
 						// var, auto|reg
 						// matchobj comparing flags 1 with 1
-	.liconst	34
+	.liconst	38
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -5173,7 +5279,7 @@ l120: #
 						// matchobj comparing flags 2 with 74
 						// var, auto|reg
 						// matchobj comparing flags 1 with 74
-	.liconst	35
+	.liconst	39
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -5195,40 +5301,28 @@ l120: #
 
 						//../DeMiSTify/firmware/pcecd.c, line 437
 						// Q1 disposable
-						// (bitwise/arithmetic) 	//ops: 2, 0, 1
-						// (obj to r0) flags 4a type 3
+						// (bitwise/arithmetic) 	//ops: 2, 0, 6
+						// (obj to r5) flags 4a type 3
 						// matchobj comparing flags 74 with 74
 						// reg r1 - only match against tmp
 	mt	r1
-	mr	r0
+	mr	r5
 						// (obj to tmp) flags 1 type 3
-						// matchobj comparing flags 1 with 74
 						// matchobj comparing flags 1 with 74
 						// const
 						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
 	.liconst	2097151
-	and	r0
-						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x2
-						// (prepobj tmp)
- 						// var, auto|reg
-						// matchobj comparing flags 1 with 1
-	.liconst	48
-	addt	r6
-	stmpdec	r0
- 						// WARNING - check that 4 has been added.
+	and	r5
+						// (save result) // isreg
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 438
 						// (test)
 						// (obj to tmp) flags 2 type 101
-						// matchobj comparing flags 2 with 130
-						// matchobj comparing flags 2 with 2
+						// matchobj comparing flags 2 with 1
 						// var, auto|reg
-						// matchobj comparing flags 1 with 130
-						// matchobj comparing flags 1 with 2
-	.liconst	36
+						// matchobj comparing flags 1 with 1
+	.liconst	40
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -5258,7 +5352,7 @@ l120: #
  						// var, auto|reg
 						// matchobj comparing flags 1 with 2
 						// matchobj comparing flags 1 with 2
-	.liconst	56
+	.liconst	36
 	addt	r6
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -5273,7 +5367,7 @@ l124: #
 						// (a/p assign)
 						// (prepobj r0)
  						// var, auto|reg
-	.liconst	52
+	.liconst	32
 	addt	r6
 	mr	r0
 
@@ -5295,11 +5389,9 @@ l125: #
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r1 - no need to prep
-						// (obj to tmp) flags 2 type 3
-						// var, auto|reg
-	.liconst	44
-						//sizemod based on type 0x3
-	ldidx	r6
+						// (obj to tmp) flags 42 type 3
+						// reg r5 - only match against tmp
+	mt	r5
 						// (save temp)isreg
 	mr	r1
 						//save_temp done
@@ -5317,7 +5409,7 @@ l125: #
 						// Store_reg to type 0x3, flags 0x2
 						// (prepobj tmp)
  						// static
-	.liabs	l12,24
+	.liabs	l12,21
 						// static pe not varadr
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -5344,11 +5436,19 @@ l125: #
 
 						//../DeMiSTify/firmware/pcecd.c, line 460
 						// (a/p assign)
+						// (prepobj tmp)
+ 						// static
+	.liabs	l12,25
+						// static pe not varadr
+						//sizemod based on type 0x3
+	stmpdec	r5
+
+						//../DeMiSTify/firmware/pcecd.c, line 461
+						// (a/p assign)
 						// (prepobj r0)
- 						// matchobj comparing flags 130 with 1
-						// matchobj comparing flags 130 with 130
+ 						// matchobj comparing flags 130 with 130
 						// static
-	.liabs	l12,24
+	.liabs	l12,25
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 2 type 3
@@ -5357,27 +5457,7 @@ l125: #
 						// var, auto|reg
 						// matchobj comparing flags 1 with 130
 						// matchobj comparing flags 1 with 130
-	.liconst	44
-						//sizemod based on type 0x3
-	ldidx	r6
-						// (save temp)store type 3
-	stinc	r0
-						//save_temp done
-
-						//../DeMiSTify/firmware/pcecd.c, line 461
-						// (a/p assign)
-						// (prepobj r0)
- 						// matchobj comparing flags 130 with 2
-						// matchobj comparing flags 130 with 130
-
-						// required value found in r0
-						// (obj to tmp) flags 2 type 3
-						// matchobj comparing flags 2 with 2
-						// matchobj comparing flags 2 with 130
-						// var, auto|reg
-						// matchobj comparing flags 1 with 2
-						// matchobj comparing flags 1 with 130
-	.liconst	52
+	.liconst	32
 						//sizemod based on type 0x3
 	ldidx	r6
 						// (save temp)store type 3
@@ -5386,19 +5466,15 @@ l125: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 463
-						// (bitwise/arithmetic) 	//ops: 0, 0, 2
-						// (obj to r1) flags 2 type 3
-						// matchobj comparing flags 2 with 2
-						// matchobj comparing flags 2 with 130
-						// var, auto|reg
-						// matchobj comparing flags 1 with 2
-						// matchobj comparing flags 1 with 130
-	.liconst	44
-						//sizemod based on type 0x3
-	ldidx	r6
+						// (bitwise/arithmetic) 	//ops: 6, 0, 2
+						// (obj to r1) flags 42 type 3
+						// matchobj comparing flags 66 with 2
+						// matchobj comparing flags 66 with 130
+						// reg r5 - only match against tmp
+	mt	r5
 	mr	r1
 						// (obj to tmp) flags 2 type 3
-						// matchobj comparing flags 2 with 2
+						// matchobj comparing flags 2 with 66
 						// matchobj comparing flags 2 with 130
 						// extern
 	.liabs	_toc, 16
@@ -5434,6 +5510,11 @@ l125: #
 	ldt
 	add	r1
 						// (save result) // isreg
+
+						//../DeMiSTify/firmware/pcecd.c, line 464
+						//FIXME convert
+						// (convert - reducing type 3 to 103
+						//No need to mask - same size
 
 						//../DeMiSTify/firmware/pcecd.c, line 464
 						// Q1 disposable
@@ -5481,7 +5562,7 @@ l125: #
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// static
-	.liabs	l12,40
+	.liabs	l12,37
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 3
@@ -5501,7 +5582,7 @@ l125: #
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
 						// static
-	.liabs	l12,17
+	.liabs	l12,15
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 101
@@ -5548,7 +5629,7 @@ l130: #
 						// (test)
 						// (obj to tmp) flags 2 type 101
 						// var, auto|reg
-	.liconst	36
+	.liconst	40
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -5565,7 +5646,7 @@ l130: #
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// static
-	.liabs	l12,16
+	.liabs	l12,14
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 101
@@ -5648,7 +5729,7 @@ l134: #
 						// matchobj comparing flags 2 with 74
 						// var, auto|reg
 						// matchobj comparing flags 1 with 74
-	.liconst	41
+	.liconst	45
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -5677,7 +5758,7 @@ l134: #
 						// (prepobj tmp)
  						// var, auto|reg
 						// matchobj comparing flags 1 with 1
-	.liconst	48
+	.liconst	36
 	addt	r6
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -5719,7 +5800,7 @@ l134: #
 						// (prepobj tmp)
  						// var, auto|reg
 						// matchobj comparing flags 1 with 1
-	.liconst	48
+	.liconst	36
 	addt	r6
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -5759,7 +5840,7 @@ l134: #
 						// (prepobj tmp)
  						// var, auto|reg
 						// matchobj comparing flags 1 with 1
-	.liconst	48
+	.liconst	36
 	addt	r6
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -5792,7 +5873,7 @@ l138: #
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 101
 						// var, auto|reg
-	.liconst	35
+	.liconst	39
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -5822,7 +5903,7 @@ l138: #
 						// matchobj comparing flags 2 with 1
 						// var, auto|reg
 						// matchobj comparing flags 1 with 1
-	.liconst	36
+	.liconst	40
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -5864,7 +5945,7 @@ l138: #
 						// matchobj comparing flags 2 with 74
 						// var, auto|reg
 						// matchobj comparing flags 1 with 74
-	.liconst	37
+	.liconst	41
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -5875,27 +5956,18 @@ l138: #
 						//../DeMiSTify/firmware/pcecd.c, line 496
 						// Q1 disposable
 						// Q2 disposable
-						// (bitwise/arithmetic) 	//ops: 3, 2, 1
-						// (obj to r0) flags 4a type 3
+						// (bitwise/arithmetic) 	//ops: 3, 2, 6
+						// (obj to r5) flags 4a type 3
 						// matchobj comparing flags 74 with 2
 						// reg r2 - only match against tmp
 	//mt
-	mr	r0
+	mr	r5
 						// (obj to tmp) flags 4a type 3
-						// matchobj comparing flags 74 with 74
 						// matchobj comparing flags 74 with 74
 						// reg r1 - only match against tmp
 	mt	r1
-	or	r0
-						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x2
-						// (prepobj tmp)
- 						// var, auto|reg
-						// matchobj comparing flags 1 with 74
-	.liconst	48
-	addt	r6
-	stmpdec	r0
- 						// WARNING - check that 4 has been added.
+	or	r5
+						// (save result) // isreg
 						// freereg r2
 						// freereg r1
 
@@ -5914,7 +5986,7 @@ l140: #
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 101
 						// var, auto|reg
-	.liconst	36
+	.liconst	40
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -5958,7 +6030,7 @@ l140: #
 						// matchobj comparing flags 2 with 74
 						// var, auto|reg
 						// matchobj comparing flags 1 with 74
-	.liconst	39
+	.liconst	43
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -6002,7 +6074,7 @@ l140: #
 						// matchobj comparing flags 2 with 74
 						// var, auto|reg
 						// matchobj comparing flags 1 with 74
-	.liconst	42
+	.liconst	46
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -6051,15 +6123,9 @@ l140: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 500
-						// (getreturn)						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x2
-						// (prepobj tmp)
- 						// var, auto|reg
-						// matchobj comparing flags 1 with 1
-	.liconst	48
-	addt	r6
-	stmpdec	r0
- 						// WARNING - check that 4 has been added.
+						// (getreturn)						// (save result) // isreg
+	mt	r0
+	mr	r5
 
 						//../DeMiSTify/firmware/pcecd.c, line 501
 						//pcreltotemp
@@ -6077,7 +6143,7 @@ l141: #
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 101
 						// var, auto|reg
-	.liconst	34
+	.liconst	38
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -6096,21 +6162,15 @@ l141: #
 						//../DeMiSTify/firmware/pcecd.c, line 506
 						// (a/p assign)
 						// (prepobj r0)
- 						// var, auto|reg
-	.liconst	44
-	addt	r6
-	mr	r0
-
+ 						// reg r5 - no need to prep
 						// (obj to tmp) flags 2 type 3
-						// matchobj comparing flags 2 with 130
-						// matchobj comparing flags 2 with 130
 						// extern
 	.liabs	_toc, 16
 						//extern deref
 						//sizemod based on type 0x3
 	ldt
-						// (save temp)store type 3
-	st	r0
+						// (save temp)isreg
+	mr	r5
 						//save_temp done
 l137: # 
 
@@ -6134,35 +6194,22 @@ l137: #
 
 						//../DeMiSTify/firmware/pcecd.c, line 522
 						// (a/p assign)
-						// (prepobj r0)
- 						// matchobj comparing flags 130 with 1
-						// matchobj comparing flags 130 with 130
-						// static
-	.liabs	l12,24
+						// (prepobj tmp)
+ 						// static
+	.liabs	l12,25
 						// static pe not varadr
-	mr	r0
-						// (obj to tmp) flags 2 type 3
-						// matchobj comparing flags 2 with 130
-						// matchobj comparing flags 2 with 130
-						// var, auto|reg
-						// matchobj comparing flags 1 with 130
-						// matchobj comparing flags 1 with 130
-	.liconst	44
 						//sizemod based on type 0x3
-	ldidx	r6
-						// (save temp)store type 3
-	st	r0
-						//save_temp done
+	stmpdec	r5
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 523
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r1 - no need to prep
-						// (obj to tmp) flags 2 type 3
-						// matchobj comparing flags 2 with 2
-
-			// required value found in tmp
+						// (obj to tmp) flags 42 type 3
+						// matchobj comparing flags 66 with 130
+						// reg r5 - only match against tmp
+	mt	r5
 						// (save temp)isreg
 	mr	r1
 						//save_temp done
@@ -6180,42 +6227,30 @@ l137: #
 						// Store_reg to type 0x3, flags 0x2
 						// (prepobj tmp)
  						// static
-	.liabs	l12,24
+	.liabs	l12,21
 						// static pe not varadr
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
 
 						//../DeMiSTify/firmware/pcecd.c, line 528
 						// (a/p assign)
-						// (prepobj r0)
- 						// matchobj comparing flags 130 with 130
-						// matchobj comparing flags 130 with 2
-						// static
-	.liabs	l12,44
+						// (prepobj tmp)
+ 						// static
+	.liabs	l12,45
 						// static pe not varadr
-	mr	r0
-						// (obj to tmp) flags 2 type 3
-						// matchobj comparing flags 2 with 130
-						// matchobj comparing flags 2 with 130
-						// var, auto|reg
-						// matchobj comparing flags 1 with 130
-						// matchobj comparing flags 1 with 130
-	.liconst	44
 						//sizemod based on type 0x3
-	ldidx	r6
-						// (save temp)store type 3
-	stinc	r0
-						//save_temp done
+	stmpdec	r5
 
 						//../DeMiSTify/firmware/pcecd.c, line 529
 						// (a/p assign)
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
-						// matchobj comparing flags 130 with 130
-
-						// required value found in r0
+						// static
+	.liabs	l12,45
+						// static pe not varadr
+	mr	r0
 						// (obj to tmp) flags 2 type 3
-						// matchobj comparing flags 2 with 2
+						// matchobj comparing flags 2 with 130
 						// matchobj comparing flags 2 with 130
 						// extern
 	.liabs	_toc
@@ -6232,7 +6267,7 @@ l137: #
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
 						// static
-	.liabs	l12,56
+	.liabs	l12,53
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 2 type 101
@@ -6241,7 +6276,7 @@ l137: #
 						// var, auto|reg
 						// matchobj comparing flags 1 with 130
 						// matchobj comparing flags 1 with 130
-	.liconst	33
+	.liconst	37
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -6256,7 +6291,7 @@ l137: #
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
 						// static
-	.liabs	l12,52
+	.liabs	l12,49
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 3
@@ -6282,7 +6317,7 @@ l137: #
 						// matchobj comparing flags 2 with 130
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,56
+	.liabs	l12,53
 						//static deref
 						//sizemod based on type 0x101
 	byt
@@ -6420,7 +6455,7 @@ l145: #
 						// matchobj comparing flags 2 with 74
 						// var, auto|reg
 						// matchobj comparing flags 1 with 74
-	.liconst	41
+	.liconst	45
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -6449,7 +6484,7 @@ l145: #
 						// (prepobj tmp)
  						// var, auto|reg
 						// matchobj comparing flags 1 with 1
-	.liconst	48
+	.liconst	36
 	addt	r6
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -6491,7 +6526,7 @@ l145: #
 						// (prepobj tmp)
  						// var, auto|reg
 						// matchobj comparing flags 1 with 1
-	.liconst	48
+	.liconst	36
 	addt	r6
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -6531,7 +6566,7 @@ l145: #
 						// (prepobj tmp)
  						// var, auto|reg
 						// matchobj comparing flags 1 with 1
-	.liconst	48
+	.liconst	36
 	addt	r6
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -6564,7 +6599,7 @@ l149: #
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 101
 						// var, auto|reg
-	.liconst	35
+	.liconst	39
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -6594,7 +6629,7 @@ l149: #
 						// matchobj comparing flags 2 with 1
 						// var, auto|reg
 						// matchobj comparing flags 1 with 1
-	.liconst	36
+	.liconst	40
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -6636,7 +6671,7 @@ l149: #
 						// matchobj comparing flags 2 with 74
 						// var, auto|reg
 						// matchobj comparing flags 1 with 74
-	.liconst	37
+	.liconst	41
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -6647,27 +6682,18 @@ l149: #
 						//../DeMiSTify/firmware/pcecd.c, line 551
 						// Q1 disposable
 						// Q2 disposable
-						// (bitwise/arithmetic) 	//ops: 3, 2, 1
-						// (obj to r0) flags 4a type 3
+						// (bitwise/arithmetic) 	//ops: 3, 2, 6
+						// (obj to r5) flags 4a type 3
 						// matchobj comparing flags 74 with 2
 						// reg r2 - only match against tmp
 	//mt
-	mr	r0
+	mr	r5
 						// (obj to tmp) flags 4a type 3
-						// matchobj comparing flags 74 with 74
 						// matchobj comparing flags 74 with 74
 						// reg r1 - only match against tmp
 	mt	r1
-	or	r0
-						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x2
-						// (prepobj tmp)
- 						// var, auto|reg
-						// matchobj comparing flags 1 with 74
-	.liconst	48
-	addt	r6
-	stmpdec	r0
- 						// WARNING - check that 4 has been added.
+	or	r5
+						// (save result) // isreg
 						// freereg r2
 						// freereg r1
 
@@ -6686,7 +6712,7 @@ l151: #
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 101
 						// var, auto|reg
-	.liconst	36
+	.liconst	40
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -6730,7 +6756,7 @@ l151: #
 						// matchobj comparing flags 2 with 74
 						// var, auto|reg
 						// matchobj comparing flags 1 with 74
-	.liconst	39
+	.liconst	43
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -6774,7 +6800,7 @@ l151: #
 						// matchobj comparing flags 2 with 74
 						// var, auto|reg
 						// matchobj comparing flags 1 with 74
-	.liconst	42
+	.liconst	46
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -6823,15 +6849,9 @@ l151: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 555
-						// (getreturn)						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x2
-						// (prepobj tmp)
- 						// var, auto|reg
-						// matchobj comparing flags 1 with 1
-	.liconst	48
-	addt	r6
-	stmpdec	r0
- 						// WARNING - check that 4 has been added.
+						// (getreturn)						// (save result) // isreg
+	mt	r0
+	mr	r5
 
 						//../DeMiSTify/firmware/pcecd.c, line 556
 						//pcreltotemp
@@ -6849,7 +6869,7 @@ l152: #
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 101
 						// var, auto|reg
-	.liconst	34
+	.liconst	38
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -6886,7 +6906,7 @@ l152: #
  						// var, auto|reg
 						// matchobj comparing flags 1 with 74
 						// matchobj comparing flags 1 with 74
-	.liconst	48
+	.liconst	36
 	addt	r6
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -6921,7 +6941,7 @@ l152: #
 						// var, auto|reg
 						// matchobj comparing flags 1 with 2
 						// matchobj comparing flags 1 with 2
-	.liconst	44
+	.liconst	32
 	addt	r6
 	mr	r0
 
@@ -6941,7 +6961,7 @@ l154: #
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to r0) flags 2 type 3
 						// var, auto|reg
-	.liconst	44
+	.liconst	32
 						//sizemod based on type 0x3
 	ldidx	r6
 	mr	r0
@@ -6968,7 +6988,7 @@ l154: #
  						// matchobj comparing flags 138 with 2
 						// var, auto|reg
 						// matchobj comparing flags 1 with 2
-	.liconst	52
+	.liconst	32
 	addt	r6
 	mr	r0
 
@@ -6994,7 +7014,7 @@ l156: #
 						// (a/p assign)
 						// (prepobj r0)
  						// var, auto|reg
-	.liconst	52
+	.liconst	32
 	addt	r6
 	mr	r0
 
@@ -7014,22 +7034,14 @@ l157: #
 						//../DeMiSTify/firmware/pcecd.c, line 563
 						// (a/p assign)
 						// (prepobj r0)
- 						// var, auto|reg
-	.liconst	44
-	addt	r6
-	mr	r0
-
+ 						// reg r5 - no need to prep
 						// (obj to tmp) flags a type 3
-						// matchobj comparing flags 10 with 130
-						// matchobj comparing flags 10 with 130
 						// var, auto|reg
-						// matchobj comparing flags 1 with 130
-						// matchobj comparing flags 1 with 130
-	.liconst	52
+	.liconst	32
 						//sizemod based on type 0x3
 	ldidx	r6
-						// (save temp)store type 3
-	st	r0
+						// (save temp)isreg
+	mr	r5
 						//save_temp done
 						// freereg r1
 l148: # 
@@ -7038,7 +7050,7 @@ l148: #
 						// (a/p assign)
 						// (prepobj r0)
  						// static
-	.liabs	l12,56
+	.liabs	l12,53
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 2 type 101
@@ -7047,7 +7059,7 @@ l148: #
 						// var, auto|reg
 						// matchobj comparing flags 1 with 130
 						// matchobj comparing flags 1 with 130
-	.liconst	33
+	.liconst	37
 						//sizemod based on type 0x101
 	byt
 	ldidx	r6
@@ -7058,25 +7070,12 @@ l148: #
 
 						//../DeMiSTify/firmware/pcecd.c, line 569
 						// (a/p assign)
-						// (prepobj r0)
- 						// matchobj comparing flags 130 with 2
-						// matchobj comparing flags 130 with 130
-						// static
-	.liabs	l12,48
+						// (prepobj tmp)
+ 						// static
+	.liabs	l12,49
 						// static pe not varadr
-	mr	r0
-						// (obj to tmp) flags 2 type 3
-						// matchobj comparing flags 2 with 130
-						// matchobj comparing flags 2 with 130
-						// var, auto|reg
-						// matchobj comparing flags 1 with 130
-						// matchobj comparing flags 1 with 130
-	.liconst	44
 						//sizemod based on type 0x3
-	ldidx	r6
-						// (save temp)store type 3
-	st	r0
-						//save_temp done
+	stmpdec	r5
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 571
@@ -7086,11 +7085,10 @@ l148: #
 						// (prepobj r1)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 101
-						// matchobj comparing flags 2 with 2
 						// matchobj comparing flags 2 with 130
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,56
+	.liabs	l12,53
 						//static deref
 						//sizemod based on type 0x101
 	byt
@@ -7177,7 +7175,7 @@ l160: #
 						// (obj to tmp) flags 2 type 101
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,56
+	.liabs	l12,53
 						//static deref
 						//sizemod based on type 0x101
 	byt
@@ -7337,7 +7335,7 @@ l166: #
 						// matchobj comparing flags 2 with 74
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,24
+	.liabs	l12,21
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -7356,7 +7354,7 @@ l166: #
 						// (prepobj tmp)
  						// var, auto|reg
 						// matchobj comparing flags 1 with 2
-	.liconst	48
+	.liconst	36
 	addt	r6
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -7422,7 +7420,7 @@ l166: #
  						// var, auto|reg
 						// matchobj comparing flags 1 with 2
 						// matchobj comparing flags 1 with 2
-	.liconst	56
+	.liconst	55
 	addt	r6
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
@@ -7454,7 +7452,7 @@ l166: #
  						// matchobj comparing flags 138 with 1
 						// var, auto|reg
 						// matchobj comparing flags 1 with 1
-	.liconst	52
+	.liconst	51
 	addt	r6
 	mr	r0
 
@@ -7479,7 +7477,7 @@ l170: #
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to r0) flags 2 type 3
 						// var, auto|reg
-	.liconst	52
+	.liconst	51
 						//sizemod based on type 0x3
 	ldidx	r6
 	mr	r0
@@ -7503,7 +7501,7 @@ l170: #
  						// matchobj comparing flags 138 with 1
 						// var, auto|reg
 						// matchobj comparing flags 1 with 1
-	.liconst	56
+	.liconst	55
 	addt	r6
 	mr	r0
 
@@ -7528,7 +7526,7 @@ l173: #
 						// (a/p assign)
 						// (prepobj r0)
  						// var, auto|reg
-	.liconst	56
+	.liconst	55
 	addt	r6
 	mr	r0
 
@@ -7548,7 +7546,7 @@ l174: #
 						// (a/p assign)
 						// (prepobj r0)
  						// var, auto|reg
-	.liconst	52
+	.liconst	51
 	addt	r6
 	mr	r0
 
@@ -7558,7 +7556,7 @@ l174: #
 						// var, auto|reg
 						// matchobj comparing flags 1 with 138
 						// matchobj comparing flags 1 with 138
-	.liconst	56
+	.liconst	55
 						//sizemod based on type 0x3
 	ldidx	r6
 						// (save temp)store type 3
@@ -7583,7 +7581,7 @@ l171: #
 						// var, auto|reg
 						// matchobj comparing flags 1 with 130
 						// matchobj comparing flags 1 with 130
-	.liconst	52
+	.liconst	51
 						//sizemod based on type 0x3
 	ldidx	r6
 						//Saving to reg r0
@@ -7619,7 +7617,7 @@ l171: #
 						// matchobj comparing flags 2 with 130
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,20
+	.liabs	l12,17
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -7660,7 +7658,7 @@ l171: #
 						// (obj to tmp) flags 2 type 3
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,20
+	.liabs	l12,17
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -7715,7 +7713,7 @@ l171: #
 						// matchobj comparing flags 2 with 74
 						// var, auto|reg
 						// matchobj comparing flags 1 with 74
-	.liconst	48
+	.liconst	36
 						//sizemod based on type 0x3
 	ldidx	r6
 						// (save temp)isreg
@@ -7854,7 +7852,7 @@ l171: #
 						// matchobj comparing flags 2 with 74
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,24
+	.liabs	l12,21
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -8101,7 +8099,7 @@ l175: #
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// static
-	.liabs	l12,12
+	.liabs	l12,10
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 3
@@ -8147,22 +8145,13 @@ l107: #
 						// freereg r5
 	.liconst	-60
 	sub	r6
-	ldinc	r6
-	mr	r5
-
-	ldinc	r6
-	mr	r4
-
-	ldinc	r6
-	mr	r3
-
-	ldinc	r6
-	mr	r7
+	.lipcrel	.functiontail, 0
+	add	r7
 
 	//registers used:
 		//r1: yes
 		//r2: yes
-		//r3: yes
+		//r3: no
 		//r4: no
 		//r5: no
 		//r6: yes
@@ -8172,22 +8161,8 @@ l107: #
 	.global	_pcecd_data
 _pcecd_data:
 	stdec	r6
-	mt	r3
-	stdec	r6
 	.liconst	-12
 	add	r6
-						// allocreg r3
-						// (a/p assign)
-						// (prepobj r0)
- 						// reg r3 - no need to prep
-						// (obj to tmp) flags 1 type 1000a
-						// matchobj comparing flags 1 with 1
-						// const
-						// matchobj comparing flags 1 with 1
-	.liconst	-44
-						// (save temp)isreg
-	mr	r3
-						//save_temp done
 						// allocreg r2
 
 						//../DeMiSTify/firmware/pcecd.c, line 639
@@ -8213,7 +8188,14 @@ _pcecd_data:
 						//../DeMiSTify/firmware/pcecd.c, line 640
 						// (a/p assign)
 						// (prepobj r0)
- 						// reg r3 - no need to prep
+ 						// matchobj comparing flags 161 with 1
+						// matchobj comparing flags 161 with 1
+						// deref
+						// const to r0
+						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
+	.liconst	-44
+	mr	r0
 						// (obj to tmp) flags 1 type 503
 						// matchobj comparing flags 1 with 1
 						// matchobj comparing flags 1 with 1
@@ -8222,7 +8204,7 @@ _pcecd_data:
 						// matchobj comparing flags 1 with 1
 	.liconst	99
 						// (save temp)store type 3
-	st	r3
+	st	r0
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 642
@@ -8244,12 +8226,19 @@ l184: #
 						//../DeMiSTify/firmware/pcecd.c, line 643
 						// (a/p assign)
 						// (prepobj r0)
- 						// reg r3 - no need to prep
+ 						// deref
+						// const to r0
+	.liconst	-44
+	mr	r0
 						// (obj to tmp) flags 1 type 503
+						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
 						// const
+						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
 	.liconst	0
 						// (save temp)store type 3
-	st	r3
+	st	r0
 						//save_temp done
 						// allocreg r1
 
@@ -8266,6 +8255,7 @@ l184: #
 						// (bitwise/arithmetic) 	//ops: 2, 3, 2
 						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 42 type a
+						// matchobj comparing flags 66 with 1
 						// reg r2 - only match against tmp
 	mt	r2
 	add	r1
@@ -8277,10 +8267,14 @@ l184: #
 						// (convert - reducing type 503 to 101
 						// (prepobj r0)
  						// reg r1 - no need to prep
-						// (obj to tmp) flags 260 type 503
-						// matchobj comparing flags 608 with 66
-						// deref 
-	ld	r3
+						// (obj to tmp) flags 21 type 503
+						// matchobj comparing flags 33 with 66
+						// matchobj comparing flags 33 with 1
+						// const/deref
+						// matchobj comparing flags 1 with 66
+						// matchobj comparing flags 1 with 1
+						//sizemod based on type 0x503
+	ld	r0
 						//Saving to reg r0
 						// (save temp)store type 1
 	stbinc	r1
@@ -8292,9 +8286,11 @@ l184: #
 						// (bitwise/arithmetic) 	//ops: 3, 0, 3
 						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 1 type 3
-						// matchobj comparing flags 1 with 608
+						// matchobj comparing flags 1 with 33
+						// matchobj comparing flags 1 with 1
 						// const
-						// matchobj comparing flags 1 with 608
+						// matchobj comparing flags 1 with 33
+						// matchobj comparing flags 1 with 1
 	.liconst	1
 	add	r2
 						// (save result) // isreg
@@ -8303,7 +8299,9 @@ l184: #
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
 						// const
+						// matchobj comparing flags 1 with 1
 						// matchobj comparing flags 1 with 1
 	.liconst	10
 	sgn
@@ -8320,8 +8318,10 @@ l184: #
 						// (a/p assign)
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
+						// matchobj comparing flags 161 with 1
 						// deref
 						// const to r0
+						// matchobj comparing flags 1 with 1
 						// matchobj comparing flags 1 with 1
 	.liconst	-48
 	mr	r0
@@ -8336,14 +8336,10 @@ l184: #
 	st	r0
 						//save_temp done
 						// freereg r2
-						// freereg r3
 						// matchobj comparing flags 1 with 1
 						// matchobj comparing flags 1 with 1
 	.liconst	-12
 	sub	r6
-	ldinc	r6
-	mr	r3
-
 	ldinc	r6
 	mr	r7
 
@@ -8365,7 +8361,7 @@ _pcecd_clear_busy:
 						// (a/p assign)
 						// (prepobj r0)
  						// static
-	.liabs	l12,17
+	.liabs	l12,15
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 101
@@ -8421,7 +8417,7 @@ _pcecd_reset:
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
 						// static
-	.liabs	l12,20
+	.liabs	l12,17
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 3
@@ -8456,7 +8452,7 @@ _pcecd_reset:
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
 						// static
-	.liabs	l12,32
+	.liabs	l12,29
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 3
@@ -8559,7 +8555,7 @@ l192: #
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 130
 						// static
-	.liabs	l12,36
+	.liabs	l12,33
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 3
@@ -8594,7 +8590,7 @@ l192: #
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
 						// static
-	.liabs	l12,12
+	.liabs	l12,10
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 3
@@ -8646,7 +8642,7 @@ l192: #
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
 						// static
-	.liabs	l12,44
+	.liabs	l12,41
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 3
@@ -8681,7 +8677,7 @@ l192: #
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
 						// static
-	.liabs	l12,56
+	.liabs	l12,53
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 101
@@ -8701,17 +8697,12 @@ l192: #
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
-						// static
-	.liabs	l12,58
-						// static pe not varadr
-	mr	r0
+
+						// required value found in r0
 						// (obj to tmp) flags 1 type 102
-						// matchobj comparing flags 1 with 130
-						// matchobj comparing flags 1 with 130
-						// const
-						// matchobj comparing flags 1 with 130
-						// matchobj comparing flags 1 with 130
-	.liconst	0
+						// matchobj comparing flags 1 with 1
+
+			// required value found in tmp
 						// (save temp)store type 2
 	hlf
 	st	r0
@@ -8723,7 +8714,7 @@ l192: #
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
 						// static
-	.liabs	l12,18
+	.liabs	l12,16
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 101
@@ -9099,7 +9090,7 @@ l203: #
 						// (convert - reducing type 3 to 101
 						// (prepobj tmp)
  						// static
-	.liabs	l12,22
+	.liabs	l12,20
 						// static pe not varadr
 						//sizemod based on type 0x101
 	byt
@@ -9118,7 +9109,7 @@ l203: #
 						// (obj to tmp) flags 2 type 3
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,12
+	.liabs	l12,10
 						//static deref
 						//sizemod based on type 0x3
 	ldt
@@ -9161,7 +9152,7 @@ l203: #
 						// matchobj comparing flags 2 with 2
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,58
+	.liabs	l12,54
 						//static deref
 						//sizemod based on type 0x102
 	hlf
@@ -9182,7 +9173,7 @@ l203: #
 						// (a/p assign)
 						// (prepobj r0)
  						// static
-	.liabs	l12,12
+	.liabs	l12,10
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 3
@@ -9203,7 +9194,7 @@ l205: #
 						// (obj to tmp) flags 2 type 101
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
-	.liabs	l12,16
+	.liabs	l12,14
 						//static deref
 						//sizemod based on type 0x101
 	byt
@@ -9306,7 +9297,7 @@ l205: #
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 1
 						// static
-	.liabs	l12,16
+	.liabs	l12,14
 						// static pe not varadr
 	mr	r0
 						// (obj to tmp) flags 1 type 101
@@ -9323,27 +9314,19 @@ l205: #
 l208: # 
 						// freereg r1
 						// freereg r3
-	ldinc	r6
-	mr	r3
-
-	ldinc	r6
-	mr	r7
+	.lipcrel	.functiontail, 4
+	add	r7
 
 	.section	.bss.10
-	.align	4
 	.global	_cd_buffer
 	.comm	_cd_buffer,2352
 	.section	.data.11
-	.align	4
 l51:
 	.int	0
 	.section	.data.12
-	.align	4
 l193:
 	.int	0
 	.section	.bss.13
-	.align	4
 	.lcomm	l11,4
 	.section	.bss.14
-	.align	4
-	.lcomm	l12,60
+	.lcomm	l12,56

@@ -310,10 +310,7 @@ _spi_uio_cmd8:
 	st	r0
 						//save_temp done
 						// freereg r2
-						// matchobj comparing flags 1 with 1
-						// matchobj comparing flags 1 with 1
-	.liconst	-4
-	sub	r6
+	ldinc	r6	// shortest way to add 4 to sp
 	ldinc	r6
 	mr	r7
 
@@ -415,8 +412,17 @@ _user_io_digital_joystick_ext:
 						// Deferred popping of 4 bytes (4 in total)
 						// freereg r1
 						// freereg r3
-	.liconst	-4
-	sub	r6
+	ldinc	r6	// shortest way to add 4 to sp
+	.lipcrel	.functiontail, 4
+	add	r7
+
+.functiontail:
+	ldinc	r6
+	mr	r5
+
+	ldinc	r6
+	mr	r4
+
 	ldinc	r6
 	mr	r3
 
@@ -608,13 +614,9 @@ l15: #
 						// freereg r1
 						// freereg r2
 						// freereg r3
-	.liconst	-4
-	sub	r6
-	ldinc	r6
-	mr	r3
-
-	ldinc	r6
-	mr	r7
+	ldinc	r6	// shortest way to add 4 to sp
+	.lipcrel	.functiontail, 4
+	add	r7
 
 	//registers used:
 		//r1: yes
@@ -737,74 +739,99 @@ _user_io_analogue_joystick:
 	// Volatile, or not int - not caching
 
 						//../DeMiSTify/firmware/user_io.c, line 69
-						// Q1 disposable
-						// (bitwise/arithmetic) 	//ops: 2, 0, 1
-						// (obj to r0) flags 4a type 3
-						// matchobj comparing flags 74 with 130
-						// reg r1 - only match against tmp
-	mt	r1
-	mr	r0
+						// (bitwise/arithmetic) 	//ops: 2, 0, 2
+						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 1 type 3
-						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 130
 						// const
-						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 130
 	.liconst	8
 	sgn
-	shr	r0
-						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x21
-						// (prepobj tmp)
+	shr	r1
+						// (save result) // isreg
+
+						//../DeMiSTify/firmware/user_io.c, line 69
+						// Q1 disposable
+						//FIXME convert
+						// (convert - reducing type 3 to 503
+						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// deref
-						// const to tmp
+						// const to r0
 						// matchobj comparing flags 1 with 1
 	.liconst	-44
-	exg	r0
+	mr	r0
+						// (obj to tmp) flags 4a type 3
+						// matchobj comparing flags 74 with 1
+						// matchobj comparing flags 74 with 1
+						// reg r1 - only match against tmp
+	mt	r1
+						// (save temp)store type 3
 	st	r0
-						// WARNING - Object is disposable, not bothering to undo exg - check correctness
+						//save_temp done
 						// freereg r1
+						// allocreg r1
 
 						//../DeMiSTify/firmware/user_io.c, line 70
-						// (bitwise/arithmetic) 	//ops: 0, 0, 1
-						// (obj to r0) flags 2a type 3
+						// (bitwise/arithmetic) 	//ops: 0, 0, 2
+						// (obj to r1) flags 2a type 3
+						// matchobj comparing flags 42 with 74
+						// matchobj comparing flags 42 with 1
 						// deref 
 						// (prepobj tmp)
- 						// deref
+ 						// matchobj comparing flags 170 with 74
+						// matchobj comparing flags 170 with 1
+						// deref
 						// var FIXME - deref?
 						// reg - auto
+						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
 	.liconst	8
 	ldidx	r6
 						//sizemod based on type 0x3
 	ldt
-	mr	r0
+	mr	r1
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 42
-						// matchobj comparing flags 1 with 42
+						// matchobj comparing flags 1 with 1
 						// const
 						// matchobj comparing flags 1 with 42
-						// matchobj comparing flags 1 with 42
+						// matchobj comparing flags 1 with 1
 	.liconst	8
 	sgn
-	shr	r0
-						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x21
-						// (prepobj tmp)
+	shr	r1
+						// (save result) // isreg
+
+						//../DeMiSTify/firmware/user_io.c, line 70
+						// Q1 disposable
+						//FIXME convert
+						// (convert - reducing type 3 to 503
+						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
+						// matchobj comparing flags 161 with 1
 						// deref
-						// const to tmp
+						// const to r0
 						// matchobj comparing flags 1 with 1
-	.liconst	-44
-	exg	r0
+						// matchobj comparing flags 1 with 1
+						// (obj to tmp) flags 4a type 3
+						// matchobj comparing flags 74 with 1
+						// matchobj comparing flags 74 with 1
+						// reg r1 - only match against tmp
+	mt	r1
+						// (save temp)store type 3
 	st	r0
-						// WARNING - Object is disposable, not bothering to undo exg - check correctness
+						//save_temp done
+						// freereg r1
 
 						//../DeMiSTify/firmware/user_io.c, line 71
 						// (a/p assign)
 						// (prepobj r0)
- 						// deref
+ 						// matchobj comparing flags 161 with 74
+						// matchobj comparing flags 161 with 1
+						// deref
 						// const to r0
+						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
 	.liconst	-48
 	mr	r0
 						// (obj to tmp) flags 1 type 503
@@ -818,10 +845,160 @@ _user_io_analogue_joystick:
 	st	r0
 						//save_temp done
 						// freereg r2
-						// matchobj comparing flags 1 with 1
-						// matchobj comparing flags 1 with 1
-	.liconst	-4
-	sub	r6
+	ldinc	r6	// shortest way to add 4 to sp
 	ldinc	r6
 	mr	r7
+
+	//registers used:
+		//r1: yes
+		//r2: yes
+		//r3: yes
+		//r4: no
+		//r5: no
+		//r6: yes
+		//r7: yes
+		//tmp: yes
+	.section	.text.7
+	.global	_user_io_send_rtc
+_user_io_send_rtc:
+	stdec	r6
+	mt	r3
+	stdec	r6
+						// allocreg r3
+						// allocreg r1
+						// Q1 disposable
+						// (a/p assign)
+						// (prepobj r0)
+ 						// reg r3 - no need to prep
+						// (obj to tmp) flags 40 type a
+						// reg r1 - only match against tmp
+	mt	r1
+						// (save temp)isreg
+	mr	r3
+						//save_temp done
+						// freereg r1
+						// allocreg r2
+						// allocreg r1
+
+						//../DeMiSTify/firmware/user_io.c, line 77
+						// (a/p assign)
+						// (prepobj r0)
+ 						// reg r1 - no need to prep
+						// (obj to tmp) flags 1 type 3
+						// matchobj comparing flags 1 with 64
+						// const
+						// matchobj comparing flags 1 with 64
+	.liconst	34
+						// (save temp)isreg
+	mr	r1
+						//save_temp done
+
+						//../DeMiSTify/firmware/user_io.c, line 77
+						//call
+						//pcreltotemp
+	.lipcrel	_spi_uio_cmd_cont
+	add	r7
+						// Flow control - popping 0 + 0 bytes
+						// freereg r1
+
+						//../DeMiSTify/firmware/user_io.c, line 78
+						// (a/p assign)
+						// (prepobj r0)
+ 						// reg r2 - no need to prep
+						// (obj to tmp) flags 1 type 3
+						// const
+	.liconst	7
+						// (save temp)isreg
+	mr	r2
+						//save_temp done
+l23: # 
+
+						//../DeMiSTify/firmware/user_io.c, line 79
+						//FIXME convert
+						//Converting to wider type...
+						//But unsigned, so no need to extend
+						// (obj to r0) flags 6a type 101
+						// deref 
+	ldbinc	r3
+	mr	r0
+						// (save result) // not reg
+						// Store_reg to type 0x503, flags 0x21
+						// (prepobj tmp)
+ 						// matchobj comparing flags 161 with 106
+						// matchobj comparing flags 161 with 106
+						// deref
+						// const to tmp
+						// matchobj comparing flags 1 with 106
+						// matchobj comparing flags 1 with 106
+	.liconst	-44
+	exg	r0
+	st	r0
+						// WARNING - Object is disposable, not bothering to undo exg - check correctness
+						// allocreg r1
+
+						//../DeMiSTify/firmware/user_io.c, line 78
+						// (a/p assign)
+						// (prepobj r0)
+ 						// reg r1 - no need to prep
+						// (obj to tmp) flags 42 type 3
+						// reg r2 - only match against tmp
+	mt	r2
+						// (save temp)isreg
+	mr	r1
+						//save_temp done
+
+						//../DeMiSTify/firmware/user_io.c, line 78
+						// (bitwise/arithmetic) 	//ops: 3, 0, 3
+						// WARNING - q1 and target collision - check code for correctness.
+						// (obj to tmp) flags 1 type 3
+						// matchobj comparing flags 1 with 66
+						// const
+						// matchobj comparing flags 1 with 66
+	.liconst	1
+	sub	r2
+						// (save result) // isreg
+
+						//../DeMiSTify/firmware/user_io.c, line 78
+						// Q1 disposable
+						// (test)
+						// (obj to tmp) flags 4a type 3
+						// matchobj comparing flags 74 with 1
+						// reg r1 - only match against tmp
+	mt	r1
+				// flags 4a
+	and	r1
+						// freereg r1
+
+						//../DeMiSTify/firmware/user_io.c, line 78
+	cond	NEQ
+						//conditional branch regular
+						//pcreltotemp
+	.lipcrel	l23
+		add	r7
+						// allocreg r1
+
+						//../DeMiSTify/firmware/user_io.c, line 80
+						// (a/p assign)
+						// (prepobj r0)
+ 						// matchobj comparing flags 161 with 74
+						// deref
+						// const to r0
+						// matchobj comparing flags 1 with 74
+	.liconst	-48
+	mr	r0
+						// (obj to tmp) flags 1 type 503
+						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
+						// const
+						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
+	.liconst	32
+						// (save temp)store type 3
+	st	r0
+						//save_temp done
+						// freereg r1
+						// freereg r2
+						// freereg r3
+	.lipcrel	.functiontail, 4
+	add	r7
 

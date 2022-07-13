@@ -310,10 +310,7 @@ _spi_osd_cmd8:
 	st	r0
 						//save_temp done
 						// freereg r2
-						// matchobj comparing flags 1 with 1
-						// matchobj comparing flags 1 with 1
-	.liconst	-4
-	sub	r6
+	ldinc	r6	// shortest way to add 4 to sp
 	ldinc	r6
 	mr	r7
 
@@ -372,6 +369,7 @@ _OsdWriteStart:
 	.lipcrel	_OsdWriteEnd
 	add	r7
 						// Flow control - popping 0 + 0 bytes
+						// freereg r1
 l16: # 
 
 						//../DeMiSTify/firmware/osd.c, line 54
@@ -391,39 +389,55 @@ l16: #
 						// (save temp)store type 3
 	st	r0
 						//save_temp done
+						// allocreg r1
 
 						//../DeMiSTify/firmware/osd.c, line 55
-						// (bitwise/arithmetic) 	//ops: 4, 0, 1
-						// (obj to r0) flags 42 type 3
+						// (bitwise/arithmetic) 	//ops: 4, 0, 2
+						// (obj to r1) flags 42 type 3
 						// matchobj comparing flags 66 with 1
 						// matchobj comparing flags 66 with 1
 						// reg r3 - only match against tmp
 	mt	r3
-	mr	r0
+	mr	r1
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 66
-						// matchobj comparing flags 1 with 66
+						// matchobj comparing flags 1 with 1
 						// const
 						// matchobj comparing flags 1 with 66
-						// matchobj comparing flags 1 with 66
+						// matchobj comparing flags 1 with 1
 	.liconst	32
-	or	r0
-						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x21
-						// (prepobj tmp)
+	or	r1
+						// (save result) // isreg
+
+						//../DeMiSTify/firmware/osd.c, line 55
+						// Q1 disposable
+						//FIXME convert
+						// (convert - reducing type 3 to 503
+						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
+						// matchobj comparing flags 161 with 1
 						// deref
-						// const to tmp
+						// const to r0
+						// matchobj comparing flags 1 with 1
 						// matchobj comparing flags 1 with 1
 	.liconst	-44
-	exg	r0
+	mr	r0
+						// (obj to tmp) flags 4a type 3
+						// matchobj comparing flags 74 with 1
+						// matchobj comparing flags 74 with 1
+						// reg r1 - only match against tmp
+	mt	r1
+						// (save temp)store type 3
 	st	r0
-						// WARNING - Object is disposable, not bothering to undo exg - check correctness
+						//save_temp done
+						// freereg r1
 
 						//../DeMiSTify/firmware/osd.c, line 56
 						// (a/p assign)
 						// (prepobj r0)
- 						// static
+ 						// matchobj comparing flags 130 with 74
+						// matchobj comparing flags 130 with 1
+						// static
 	.liabs	l9,0
 						// static pe not varadr
 	mr	r0
@@ -455,6 +469,7 @@ l16: #
 						//pcreltotemp
 	.lipcrel	l18
 		add	r7
+						// allocreg r1
 
 						//../DeMiSTify/firmware/osd.c, line 57
 						// (a/p assign)
@@ -573,6 +588,16 @@ l22: #
 						// freereg r1
 						// freereg r2
 						// freereg r3
+	.lipcrel	.functiontail, 4
+	add	r7
+
+.functiontail:
+	ldinc	r6
+	mr	r5
+
+	ldinc	r6
+	mr	r4
+
 	ldinc	r6
 	mr	r3
 
@@ -597,27 +622,27 @@ _OsdPutChar:
 	stmpdec	r4
 	stmpdec	r5
 	exg	r6
-						// allocreg r5
+						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
 						// (a/p assign)
 						// (prepobj r0)
- 						// reg r5 - no need to prep
+ 						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 101
 						// reg r1 - only match against tmp
 	mt	r1
 						// (save temp)isreg
-	mr	r5
+	mr	r2
 						//save_temp done
 						// freereg r1
+						// allocreg r5
 						// allocreg r4
 						// allocreg r3
-						// allocreg r2
 
 						//../DeMiSTify/firmware/osd.c, line 64
 						// (a/p assign)
 						// (prepobj r0)
- 						// reg r3 - no need to prep
+ 						// reg r4 - no need to prep
 						// (obj to tmp) flags 2 type 3
 						// matchobj comparing flags 2 with 64
 						//static not varadr
@@ -627,17 +652,17 @@ _OsdPutChar:
 						//sizemod based on type 0x3
 	ldt
 						// (save temp)isreg
-	mr	r3
+	mr	r4
 						//save_temp done
 
 						//../DeMiSTify/firmware/osd.c, line 67
 						// (test)
 						// (obj to tmp) flags 42 type 101
 						// matchobj comparing flags 66 with 2
-						// reg r5 - only match against tmp
-	mt	r5
+						// reg r2 - only match against tmp
+	mt	r2
 				// flags 42
-	and	r5
+	and	r2
 
 						//../DeMiSTify/firmware/osd.c, line 67
 	cond	EQ
@@ -655,7 +680,7 @@ _OsdPutChar:
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type 101
 						// matchobj comparing flags 66 with 66
-						// reg r5 - only match against tmp
+						// reg r2 - only match against tmp
 						// (save temp)isreg
 	mr	r1
 						//save_temp done
@@ -673,18 +698,18 @@ _OsdPutChar:
 
 						//../DeMiSTify/firmware/osd.c, line 68
 						// Q2 disposable
-						// (bitwise/arithmetic) 	//ops: 0, 2, 3
-						// (obj to r2) flags 82 type a
-						// (prepobj r2)
+						// (bitwise/arithmetic) 	//ops: 0, 2, 4
+						// (obj to r3) flags 82 type a
+						// (prepobj r3)
  						// extern (offset -256)
 	.liabs	_font, -256
 						// extern pe is varadr
-	mr	r2
+	mr	r3
 						// (obj to tmp) flags 4a type a
 						// matchobj comparing flags 74 with 130
 						// reg r1 - only match against tmp
 	mt	r1
-	add	r2
+	add	r3
 						// (save result) // isreg
 						// freereg r1
 
@@ -697,26 +722,26 @@ l26: #
 						//../DeMiSTify/firmware/osd.c, line 70
 						// (a/p assign)
 						// (prepobj r0)
- 						// reg r2 - no need to prep
+ 						// reg r3 - no need to prep
 						// (obj to tmp) flags 82 type a
 						// (prepobj tmp)
  						// extern (offset 0)
 	.liabs	_font
 						// extern pe is varadr
 						// (save temp)isreg
-	mr	r2
+	mr	r3
 						//save_temp done
 l27: # 
 
 						//../DeMiSTify/firmware/osd.c, line 71
 						// (a/p assign)
 						// (prepobj r0)
- 						// reg r4 - no need to prep
+ 						// reg r5 - no need to prep
 						// (obj to tmp) flags 1 type 3
 						// const
 	.liconst	0
 						// (save temp)isreg
-	mr	r4
+	mr	r5
 						//save_temp done
 l32: # 
 						// allocreg r1
@@ -729,25 +754,25 @@ l32: #
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 301
 						// deref 
-	ldbinc	r2
+	ldbinc	r3
 						// (save temp)isreg
 	mr	r1
 						//save_temp done
 
 						//../DeMiSTify/firmware/osd.c, line 73
-						// (bitwise/arithmetic) 	//ops: 2, 4, 2
+						// (bitwise/arithmetic) 	//ops: 2, 5, 2
 						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 42 type 3
 						// matchobj comparing flags 66 with 106
-						// reg r3 - only match against tmp
-	mt	r3
+						// reg r4 - only match against tmp
+	mt	r4
 	and	r1
 						// (save result) // isreg
 
 						//../DeMiSTify/firmware/osd.c, line 73
-						// Q2 disposable
-						// (bitwise/arithmetic) 	//ops: 0, 2, 1
-						// (obj to r0) flags 2 type 3
+						// (bitwise/arithmetic) 	//ops: 0, 2, 2
+						// WARNING - q1 and target collision - check code for correctness.
+						// (obj to tmp) flags 2 type 3
 						// matchobj comparing flags 2 with 66
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
@@ -755,55 +780,65 @@ l32: #
 						//static deref
 						//sizemod based on type 0x3
 	ldt
+	xor	r1
+						// (save result) // isreg
+
+						//../DeMiSTify/firmware/osd.c, line 73
+						// Q1 disposable
+						//FIXME convert
+						// (convert - reducing type 3 to 503
+						// (prepobj r0)
+ 						// matchobj comparing flags 161 with 2
+						// deref
+						// const to r0
+						// matchobj comparing flags 1 with 2
+	.liconst	-44
 	mr	r0
 						// (obj to tmp) flags 4a type 3
-						// matchobj comparing flags 74 with 2
-						// matchobj comparing flags 74 with 2
+						// matchobj comparing flags 74 with 1
+						// matchobj comparing flags 74 with 1
 						// reg r1 - only match against tmp
 	mt	r1
-	xor	r0
-						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x21
-						// (prepobj tmp)
- 						// matchobj comparing flags 161 with 74
-						// deref
-						// const to tmp
-						// matchobj comparing flags 1 with 74
-	.liconst	-44
-	exg	r0
+						// (save temp)store type 3
 	st	r0
-						// WARNING - Object is disposable, not bothering to undo exg - check correctness
+						//save_temp done
 						// freereg r1
 
 						//../DeMiSTify/firmware/osd.c, line 74
-						// (bitwise/arithmetic) 	//ops: 4, 0, 4
+						// (bitwise/arithmetic) 	//ops: 5, 0, 5
 						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 1 type 3
+						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
 						// const
+						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
 	.liconst	1
 	sgn
-	shr	r3
+	shr	r4
 						// (save result) // isreg
 
 						//../DeMiSTify/firmware/osd.c, line 72
-						// (bitwise/arithmetic) 	//ops: 5, 0, 5
+						// (bitwise/arithmetic) 	//ops: 6, 0, 6
 						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 1
 
 			// required value found in tmp
-	add	r4
+	add	r5
 						// (save result) // isreg
 
 						//../DeMiSTify/firmware/osd.c, line 72
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
 						// const
+						// matchobj comparing flags 1 with 1
 						// matchobj comparing flags 1 with 1
 	.liconst	8
 	sgn
-	cmp	r4
+	cmp	r5
 
 						//../DeMiSTify/firmware/osd.c, line 72
 	cond	SLT
@@ -815,6 +850,7 @@ l32: #
 						//../DeMiSTify/firmware/osd.c, line 76
 						// (bitwise/arithmetic) 	//ops: 0, 0, 1
 						// (obj to r0) flags 2 type 3
+						// matchobj comparing flags 2 with 1
 						// matchobj comparing flags 2 with 1
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
@@ -843,17 +879,8 @@ l32: #
 						// freereg r3
 						// freereg r4
 						// freereg r5
-	ldinc	r6
-	mr	r5
-
-	ldinc	r6
-	mr	r4
-
-	ldinc	r6
-	mr	r3
-
-	ldinc	r6
-	mr	r7
+	.lipcrel	.functiontail, 0
+	add	r7
 
 	//registers used:
 		//r1: yes
@@ -969,11 +996,8 @@ l40: #
 						// freereg r1
 						// freereg r2
 						// freereg r3
-	ldinc	r6
-	mr	r3
-
-	ldinc	r6
-	mr	r7
+	.lipcrel	.functiontail, 4
+	add	r7
 
 	//registers used:
 		//r1: yes
@@ -1049,21 +1073,23 @@ _OsdWriteEnd:
 l46: # 
 
 						//../DeMiSTify/firmware/osd.c, line 90
-						// (a/p assign)
+						//FIXME convert
+						// (convert - reducing type 3 to 503
 						// (prepobj r0)
  						// deref
 						// const to r0
 	.liconst	-44
 	mr	r0
-						// (obj to tmp) flags 2 type 503
+						// (obj to tmp) flags 2 type 3
 						// matchobj comparing flags 2 with 1
 						// matchobj comparing flags 2 with 1
 						//static not varadr
 						//statictotemp (FIXME - make PC-relative?)
 	.liabs	l10,0
 						//static deref
-						//sizemod based on type 0x503
+						//sizemod based on type 0x3
 	ldt
+						//Saving to reg r0
 						// (save temp)store type 3
 	st	r0
 						//save_temp done
@@ -1171,14 +1197,10 @@ l47: #
 	mr	r7
 
 	.section	.bss.8
-	.align	4
 	.lcomm	l9,4
 	.section	.bss.9
-	.align	4
 	.lcomm	l10,4
 	.section	.bss.a
-	.align	4
 	.lcomm	l11,4
 	.section	.bss.b
-	.align	4
 	.lcomm	l12,4

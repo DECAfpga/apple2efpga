@@ -44,7 +44,7 @@ _user_io_sd_get_status:
 						//save_temp done
 						// allocreg r2
 
-						//../DeMiSTify/firmware/diskimg.c, line 17
+						//../DeMiSTify/firmware/diskimg.c, line 18
 						// (a/p assign)
 						// (prepobj r0)
  						// matchobj comparing flags 162 with 1
@@ -63,7 +63,7 @@ _user_io_sd_get_status:
 						//save_temp done
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 18
+						//../DeMiSTify/firmware/diskimg.c, line 19
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r1 - no need to prep
@@ -76,7 +76,7 @@ _user_io_sd_get_status:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/diskimg.c, line 18
+						//../DeMiSTify/firmware/diskimg.c, line 19
 						//call
 						//pcreltotemp
 	.lipcrel	_spi_uio_cmd_cont
@@ -84,7 +84,7 @@ _user_io_sd_get_status:
 						// Flow control - popping 0 + 0 bytes
 						// freereg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 19
+						//../DeMiSTify/firmware/diskimg.c, line 20
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r4 - no need to prep
@@ -96,7 +96,7 @@ _user_io_sd_get_status:
 						//save_temp done
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 19
+						//../DeMiSTify/firmware/diskimg.c, line 20
 						//FIXME convert
 						// (convert - reducing type 503 to 101
 						// (prepobj r0)
@@ -113,7 +113,7 @@ _user_io_sd_get_status:
 	.liconst	255
 	and	r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 20
+						//../DeMiSTify/firmware/diskimg.c, line 21
 						// Q1 disposable
 						//FIXME convert
 						//Converting to wider type...
@@ -130,7 +130,7 @@ _user_io_sd_get_status:
 						// freereg r1
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 20
+						//../DeMiSTify/firmware/diskimg.c, line 21
 						// (bitwise/arithmetic) 	//ops: 6, 0, 2
 						// (obj to r1) flags 42 type 3
 						// matchobj comparing flags 66 with 74
@@ -145,7 +145,7 @@ _user_io_sd_get_status:
 	and	r1
 						// (save result) // isreg
 
-						//../DeMiSTify/firmware/diskimg.c, line 20
+						//../DeMiSTify/firmware/diskimg.c, line 21
 						// Q1 disposable
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to tmp) flags 1 type 3
@@ -156,7 +156,7 @@ _user_io_sd_get_status:
 	cmp	r1
 						// freereg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 20
+						//../DeMiSTify/firmware/diskimg.c, line 21
 	cond	NEQ
 						//conditional branch regular
 						//pcreltotemp
@@ -164,7 +164,7 @@ _user_io_sd_get_status:
 		add	r7
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 20
+						//../DeMiSTify/firmware/diskimg.c, line 21
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r4 - no need to prep
@@ -177,7 +177,7 @@ _user_io_sd_get_status:
 	st	r4
 						//save_temp done
 
-						//../DeMiSTify/firmware/diskimg.c, line 20
+						//../DeMiSTify/firmware/diskimg.c, line 21
 						// (bitwise/arithmetic) 	//ops: 5, 0, 1
 						// (obj to r0) flags 260 type 503
 						// matchobj comparing flags 608 with 1
@@ -208,7 +208,7 @@ _user_io_sd_get_status:
 						// freereg r1
 l4: # 
 
-						//../DeMiSTify/firmware/diskimg.c, line 21
+						//../DeMiSTify/firmware/diskimg.c, line 22
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r4 - no need to prep
@@ -219,7 +219,7 @@ l4: #
 	st	r4
 						//save_temp done
 
-						//../DeMiSTify/firmware/diskimg.c, line 21
+						//../DeMiSTify/firmware/diskimg.c, line 22
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r2 - no need to prep
@@ -232,7 +232,7 @@ l4: #
 						//save_temp done
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 22
+						//../DeMiSTify/firmware/diskimg.c, line 23
 						// (bitwise/arithmetic) 	//ops: 3, 0, 2
 						// (obj to r1) flags 42 type 103
 						// matchobj comparing flags 66 with 608
@@ -247,51 +247,6 @@ l4: #
 	shl	r1
 						// (save result) // isreg
 
-						//../DeMiSTify/firmware/diskimg.c, line 22
-						// (a/p assign)
-						// (prepobj r0)
- 						// reg r4 - no need to prep
-						// (obj to tmp) flags 1 type 503
-						// matchobj comparing flags 1 with 1
-						// const
-						// matchobj comparing flags 1 with 1
-	.liconst	255
-						// (save temp)store type 3
-	st	r4
-						//save_temp done
-
-						//../DeMiSTify/firmware/diskimg.c, line 22
-						// Q2 disposable
-						// (bitwise/arithmetic) 	//ops: 5, 2, 3
-						// (obj to r2) flags 260 type 503
-						// matchobj comparing flags 608 with 1
-						// deref 
-	ld	r4
-	mr	r2
-						// (obj to tmp) flags 4a type 503
-						// matchobj comparing flags 74 with 608
-						// reg r1 - only match against tmp
-	mt	r1
-	or	r2
-						// (save result) // isreg
-						// freereg r1
-						// allocreg r1
-
-						//../DeMiSTify/firmware/diskimg.c, line 23
-						// (bitwise/arithmetic) 	//ops: 3, 0, 2
-						// (obj to r1) flags 42 type 103
-						// matchobj comparing flags 66 with 74
-						// reg r2 - only match against tmp
-	mt	r2
-	mr	r1
-						// (obj to tmp) flags 1 type 103
-						// matchobj comparing flags 1 with 66
-						// const
-						// matchobj comparing flags 1 with 66
-	.liconst	8
-	shl	r1
-						// (save result) // isreg
-
 						//../DeMiSTify/firmware/diskimg.c, line 23
 						// (a/p assign)
 						// (prepobj r0)
@@ -365,8 +320,53 @@ l4: #
 	or	r2
 						// (save result) // isreg
 						// freereg r1
+						// allocreg r1
 
 						//../DeMiSTify/firmware/diskimg.c, line 25
+						// (bitwise/arithmetic) 	//ops: 3, 0, 2
+						// (obj to r1) flags 42 type 103
+						// matchobj comparing flags 66 with 74
+						// reg r2 - only match against tmp
+	mt	r2
+	mr	r1
+						// (obj to tmp) flags 1 type 103
+						// matchobj comparing flags 1 with 66
+						// const
+						// matchobj comparing flags 1 with 66
+	.liconst	8
+	shl	r1
+						// (save result) // isreg
+
+						//../DeMiSTify/firmware/diskimg.c, line 25
+						// (a/p assign)
+						// (prepobj r0)
+ 						// reg r4 - no need to prep
+						// (obj to tmp) flags 1 type 503
+						// matchobj comparing flags 1 with 1
+						// const
+						// matchobj comparing flags 1 with 1
+	.liconst	255
+						// (save temp)store type 3
+	st	r4
+						//save_temp done
+
+						//../DeMiSTify/firmware/diskimg.c, line 25
+						// Q2 disposable
+						// (bitwise/arithmetic) 	//ops: 5, 2, 3
+						// (obj to r2) flags 260 type 503
+						// matchobj comparing flags 608 with 1
+						// deref 
+	ld	r4
+	mr	r2
+						// (obj to tmp) flags 4a type 503
+						// matchobj comparing flags 74 with 608
+						// reg r1 - only match against tmp
+	mt	r1
+	or	r2
+						// (save result) // isreg
+						// freereg r1
+
+						//../DeMiSTify/firmware/diskimg.c, line 26
 						// (a/p assign)
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 74
@@ -386,7 +386,7 @@ l4: #
 	st	r0
 						//save_temp done
 
-						//../DeMiSTify/firmware/diskimg.c, line 27
+						//../DeMiSTify/firmware/diskimg.c, line 28
 						// (test)
 						// (obj to tmp) flags 42 type a
 						// matchobj comparing flags 66 with 1
@@ -396,7 +396,7 @@ l4: #
 				// flags 42
 	and	r3
 
-						//../DeMiSTify/firmware/diskimg.c, line 27
+						//../DeMiSTify/firmware/diskimg.c, line 28
 	cond	EQ
 						//conditional branch regular
 						//pcreltotemp
@@ -404,7 +404,7 @@ l4: #
 		add	r7
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 27
+						//../DeMiSTify/firmware/diskimg.c, line 28
 						// Q1 disposable
 						// Z disposable
 						// (a/p assign)
@@ -420,7 +420,7 @@ l4: #
 						//save_temp done
 l6: # 
 
-						//../DeMiSTify/firmware/diskimg.c, line 29
+						//../DeMiSTify/firmware/diskimg.c, line 30
 						// Q1 disposable
 						//setreturn
 						// (obj to r0) flags 42 type 3
@@ -432,6 +432,7 @@ l6: #
 						// freereg r3
 						// freereg r4
 						// freereg r5
+.functiontail:
 	ldinc	r6
 	mr	r5
 
@@ -484,7 +485,7 @@ _diskimg_poll:
 						// allocreg r2
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 43
+						//../DeMiSTify/firmware/diskimg.c, line 44
 						// (a/p push)
 						// a: pushed 0, regnames[sp] r6
 						// (obj to tmp) flags e2 type a
@@ -496,7 +497,7 @@ _diskimg_poll:
 						// freereg r1
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 43
+						//../DeMiSTify/firmware/diskimg.c, line 44
 						// (address)
 						// (prepobj tmp)
  						// var, auto|reg
@@ -506,7 +507,7 @@ _diskimg_poll:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/diskimg.c, line 43
+						//../DeMiSTify/firmware/diskimg.c, line 44
 						//call
 						//pcreltotemp
 	.lipcrel	_user_io_sd_get_status
@@ -516,12 +517,12 @@ _diskimg_poll:
 	add	r6
 						// freereg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 43
+						//../DeMiSTify/firmware/diskimg.c, line 44
 						// (getreturn)						// (save result) // isreg
 	mt	r0
 	mr	r3
 
-						//../DeMiSTify/firmware/diskimg.c, line 46
+						//../DeMiSTify/firmware/diskimg.c, line 47
 						// (compare) (q1 unsigned) (q2 unsigned)
 						// (obj to r0) flags 62 type 103
 						// matchobj comparing flags 98 with 66
@@ -535,7 +536,7 @@ _diskimg_poll:
 	.liconst	2
 	cmp	r0
 
-						//../DeMiSTify/firmware/diskimg.c, line 46
+						//../DeMiSTify/firmware/diskimg.c, line 47
 	cond	GE
 						//conditional branch regular
 						//pcreltotemp
@@ -543,7 +544,7 @@ _diskimg_poll:
 		add	r7
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 51
+						//../DeMiSTify/firmware/diskimg.c, line 52
 						// (bitwise/arithmetic) 	//ops: 4, 0, 3
 						// (obj to r2) flags 42 type 3
 						// matchobj comparing flags 66 with 1
@@ -558,7 +559,7 @@ _diskimg_poll:
 	and	r2
 						// (save result) // isreg
 
-						//../DeMiSTify/firmware/diskimg.c, line 51
+						//../DeMiSTify/firmware/diskimg.c, line 52
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 1
@@ -567,14 +568,14 @@ _diskimg_poll:
 	.liconst	80
 	cmp	r2
 
-						//../DeMiSTify/firmware/diskimg.c, line 51
+						//../DeMiSTify/firmware/diskimg.c, line 52
 	cond	EQ
 						//conditional branch regular
 						//pcreltotemp
 	.lipcrel	l13
 		add	r7
 
-						//../DeMiSTify/firmware/diskimg.c, line 51
+						//../DeMiSTify/firmware/diskimg.c, line 52
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 1
@@ -583,7 +584,7 @@ _diskimg_poll:
 	.liconst	96
 	cmp	r2
 
-						//../DeMiSTify/firmware/diskimg.c, line 51
+						//../DeMiSTify/firmware/diskimg.c, line 52
 	cond	NEQ
 						//conditional branch regular
 						//pcreltotemp
@@ -593,7 +594,7 @@ _diskimg_poll:
 l13: # 
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 54
+						//../DeMiSTify/firmware/diskimg.c, line 55
 						// (bitwise/arithmetic) 	//ops: 4, 0, 2
 						// (obj to r1) flags 42 type 3
 						// reg r3 - only match against tmp
@@ -608,7 +609,7 @@ l13: #
 						// (save result) // isreg
 						// freereg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 54
+						//../DeMiSTify/firmware/diskimg.c, line 55
 	cond	EQ
 						//conditional branch regular
 						//pcreltotemp
@@ -616,7 +617,7 @@ l13: #
 		add	r7
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 56
+						//../DeMiSTify/firmware/diskimg.c, line 57
 						//call
 						//pcreltotemp
 	.lipcrel	_user_io_sd_set_config
@@ -624,7 +625,7 @@ l13: #
 						// Flow control - popping 0 + 0 bytes
 l17: # 
 
-						//../DeMiSTify/firmware/diskimg.c, line 60
+						//../DeMiSTify/firmware/diskimg.c, line 61
 						// (bitwise/arithmetic) 	//ops: 4, 0, 5
 						// (obj to r4) flags 42 type 3
 						// reg r3 - only match against tmp
@@ -638,7 +639,7 @@ l17: #
 	and	r4
 						// (save result) // isreg
 
-						//../DeMiSTify/firmware/diskimg.c, line 60
+						//../DeMiSTify/firmware/diskimg.c, line 61
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 1
@@ -647,7 +648,7 @@ l17: #
 	.liconst	2
 	cmp	r4
 
-						//../DeMiSTify/firmware/diskimg.c, line 60
+						//../DeMiSTify/firmware/diskimg.c, line 61
 	cond	NEQ
 						//conditional branch regular
 						//pcreltotemp
@@ -657,7 +658,7 @@ l17: #
 						// freereg r2
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 61
+						//../DeMiSTify/firmware/diskimg.c, line 62
 						// (bitwise/arithmetic) 	//ops: 0, 0, 2
 						// (obj to r1) flags 2 type 3
 						// matchobj comparing flags 2 with 1
@@ -675,7 +676,12 @@ l17: #
 	shl	r1
 						// (save result) // isreg
 
-						//../DeMiSTify/firmware/diskimg.c, line 61
+						//../DeMiSTify/firmware/diskimg.c, line 62
+						//FIXME convert
+						// (convert - reducing type 3 to 103
+						//No need to mask - same size
+
+						//../DeMiSTify/firmware/diskimg.c, line 62
 						// Q1 disposable
 						// (a/p push)
 						// a: pushed 0, regnames[sp] r6
@@ -687,7 +693,7 @@ l17: #
 						// freereg r1
 						// allocreg r2
 
-						//../DeMiSTify/firmware/diskimg.c, line 61
+						//../DeMiSTify/firmware/diskimg.c, line 62
 						// (bitwise/arithmetic) 	//ops: 0, 0, 3
 						// (obj to r2) flags 2 type 103
 						// matchobj comparing flags 2 with 74
@@ -706,7 +712,7 @@ l17: #
 						// (save result) // isreg
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 61
+						//../DeMiSTify/firmware/diskimg.c, line 62
 						// Q2 disposable
 						// (bitwise/arithmetic) 	//ops: 0, 3, 2
 						// (obj to r1) flags 82 type a
@@ -723,7 +729,7 @@ l17: #
 						// (save result) // isreg
 						// freereg r2
 
-						//../DeMiSTify/firmware/diskimg.c, line 61
+						//../DeMiSTify/firmware/diskimg.c, line 62
 						//call
 						//pcreltotemp
 	.lipcrel	_FileSeek
@@ -732,7 +738,7 @@ l17: #
 						// freereg r1
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 62
+						//../DeMiSTify/firmware/diskimg.c, line 63
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r1 - no need to prep
@@ -743,7 +749,7 @@ l17: #
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/diskimg.c, line 62
+						//../DeMiSTify/firmware/diskimg.c, line 63
 						//call
 						//pcreltotemp
 	.lipcrel	_spi_uio_cmd_cont
@@ -751,7 +757,7 @@ l17: #
 						// Deferred popping of 0 bytes (4 in total)
 						// freereg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 63
+						//../DeMiSTify/firmware/diskimg.c, line 64
 						// (a/p push)
 						// a: pushed 0, regnames[sp] r6
 						// (obj to tmp) flags 1 type 3
@@ -760,7 +766,7 @@ l17: #
 	stdec	r6
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 63
+						//../DeMiSTify/firmware/diskimg.c, line 64
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r1 - no need to prep
@@ -775,7 +781,7 @@ l17: #
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/diskimg.c, line 63
+						//../DeMiSTify/firmware/diskimg.c, line 64
 						//call
 						//pcreltotemp
 	.lipcrel	_spi_read
@@ -783,7 +789,7 @@ l17: #
 						// Deferred popping of 4 bytes (8 in total)
 						// freereg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 64
+						//../DeMiSTify/firmware/diskimg.c, line 65
 						// (a/p assign)
 						// (prepobj r0)
  						// deref
@@ -801,7 +807,7 @@ l17: #
 	st	r0
 						//save_temp done
 
-						//../DeMiSTify/firmware/diskimg.c, line 65
+						//../DeMiSTify/firmware/diskimg.c, line 66
 						// (a/p push)
 						// a: pushed 0, regnames[sp] r6
 						// (obj to tmp) flags 82 type a
@@ -816,7 +822,7 @@ l17: #
 	stdec	r6
 						// allocreg r2
 
-						//../DeMiSTify/firmware/diskimg.c, line 65
+						//../DeMiSTify/firmware/diskimg.c, line 66
 						// (bitwise/arithmetic) 	//ops: 0, 0, 3
 						// (obj to r2) flags 2 type 103
 						// matchobj comparing flags 2 with 130
@@ -839,7 +845,7 @@ l17: #
 						// (save result) // isreg
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 65
+						//../DeMiSTify/firmware/diskimg.c, line 66
 						// Q2 disposable
 						// (bitwise/arithmetic) 	//ops: 0, 3, 2
 						// (obj to r1) flags 82 type a
@@ -859,7 +865,7 @@ l17: #
 						// (save result) // isreg
 						// freereg r2
 
-						//../DeMiSTify/firmware/diskimg.c, line 65
+						//../DeMiSTify/firmware/diskimg.c, line 66
 						//call
 						//pcreltotemp
 	.lipcrel	_FileWriteSector
@@ -873,14 +879,14 @@ l19: #
 						// allocreg r2
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 69
+						//../DeMiSTify/firmware/diskimg.c, line 70
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to tmp) flags 1 type 3
 						// const
 	.liconst	1
 	cmp	r4
 
-						//../DeMiSTify/firmware/diskimg.c, line 69
+						//../DeMiSTify/firmware/diskimg.c, line 70
 	cond	NEQ
 						//conditional branch regular
 						//pcreltotemp
@@ -890,7 +896,7 @@ l19: #
 						// freereg r2
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 71
+						//../DeMiSTify/firmware/diskimg.c, line 72
 						// (bitwise/arithmetic) 	//ops: 0, 0, 2
 						// (obj to r1) flags 2 type 3
 						// matchobj comparing flags 2 with 1
@@ -908,7 +914,12 @@ l19: #
 	shl	r1
 						// (save result) // isreg
 
-						//../DeMiSTify/firmware/diskimg.c, line 71
+						//../DeMiSTify/firmware/diskimg.c, line 72
+						//FIXME convert
+						// (convert - reducing type 3 to 103
+						//No need to mask - same size
+
+						//../DeMiSTify/firmware/diskimg.c, line 72
 						// Q1 disposable
 						// (a/p push)
 						// a: pushed 0, regnames[sp] r6
@@ -920,7 +931,7 @@ l19: #
 						// freereg r1
 						// allocreg r2
 
-						//../DeMiSTify/firmware/diskimg.c, line 71
+						//../DeMiSTify/firmware/diskimg.c, line 72
 						// (bitwise/arithmetic) 	//ops: 0, 0, 3
 						// (obj to r2) flags 2 type 103
 						// matchobj comparing flags 2 with 74
@@ -939,7 +950,7 @@ l19: #
 						// (save result) // isreg
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 71
+						//../DeMiSTify/firmware/diskimg.c, line 72
 						// Q2 disposable
 						// (bitwise/arithmetic) 	//ops: 0, 3, 2
 						// (obj to r1) flags 82 type a
@@ -956,7 +967,7 @@ l19: #
 						// (save result) // isreg
 						// freereg r2
 
-						//../DeMiSTify/firmware/diskimg.c, line 71
+						//../DeMiSTify/firmware/diskimg.c, line 72
 						//call
 						//pcreltotemp
 	.lipcrel	_FileSeek
@@ -964,7 +975,7 @@ l19: #
 						// Deferred popping of 4 bytes (4 in total)
 						// freereg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 74
+						//../DeMiSTify/firmware/diskimg.c, line 75
 						// (a/p push)
 						// a: pushed 0, regnames[sp] r6
 						// (obj to tmp) flags 82 type a
@@ -975,7 +986,7 @@ l19: #
 	stdec	r6
 						// allocreg r2
 
-						//../DeMiSTify/firmware/diskimg.c, line 74
+						//../DeMiSTify/firmware/diskimg.c, line 75
 						// (bitwise/arithmetic) 	//ops: 0, 0, 3
 						// (obj to r2) flags 2 type 103
 						// matchobj comparing flags 2 with 130
@@ -994,7 +1005,7 @@ l19: #
 						// (save result) // isreg
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 74
+						//../DeMiSTify/firmware/diskimg.c, line 75
 						// Q2 disposable
 						// (bitwise/arithmetic) 	//ops: 0, 3, 2
 						// (obj to r1) flags 82 type a
@@ -1011,7 +1022,7 @@ l19: #
 						// (save result) // isreg
 						// freereg r2
 
-						//../DeMiSTify/firmware/diskimg.c, line 74
+						//../DeMiSTify/firmware/diskimg.c, line 75
 						//call
 						//pcreltotemp
 	.lipcrel	_FileReadSector
@@ -1020,7 +1031,7 @@ l19: #
 						// freereg r1
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 75
+						//../DeMiSTify/firmware/diskimg.c, line 76
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r1 - no need to prep
@@ -1031,7 +1042,7 @@ l19: #
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/diskimg.c, line 75
+						//../DeMiSTify/firmware/diskimg.c, line 76
 						//call
 						//pcreltotemp
 	.lipcrel	_spi_uio_cmd_cont
@@ -1039,7 +1050,7 @@ l19: #
 						// Deferred popping of 0 bytes (8 in total)
 						// freereg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 76
+						//../DeMiSTify/firmware/diskimg.c, line 77
 						// (a/p push)
 						// a: pushed 0, regnames[sp] r6
 						// (obj to tmp) flags 1 type 3
@@ -1048,7 +1059,7 @@ l19: #
 	stdec	r6
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 76
+						//../DeMiSTify/firmware/diskimg.c, line 77
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r1 - no need to prep
@@ -1063,7 +1074,7 @@ l19: #
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/diskimg.c, line 76
+						//../DeMiSTify/firmware/diskimg.c, line 77
 						//call
 						//pcreltotemp
 	.lipcrel	_spi_write
@@ -1073,7 +1084,7 @@ l19: #
 	add	r6
 						// freereg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 77
+						//../DeMiSTify/firmware/diskimg.c, line 78
 						// (a/p assign)
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
@@ -1101,18 +1112,12 @@ l21: #
 						// freereg r4
 	.liconst	-8
 	sub	r6
-	ldinc	r6
-	mr	r4
-
-	ldinc	r6
-	mr	r3
-
-	ldinc	r6
-	mr	r7
+	.lipcrel	.functiontail, 2
+	add	r7
 
 	//registers used:
 		//r1: yes
-		//r2: yes
+		//r2: no
 		//r3: yes
 		//r4: yes
 		//r5: yes
@@ -1128,8 +1133,7 @@ _diskimg_mount:
 	stmpdec	r4
 	stmpdec	r5
 	exg	r6
-	.liconst	-4
-	add	r6
+	stdec	r6	// shortest way to decrement sp by 4
 						// allocreg r5
 						// allocreg r1
 						// Q1 disposable
@@ -1137,7 +1141,6 @@ _diskimg_mount:
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 40 type a
-						// matchobj comparing flags 64 with 1
 						// reg r1 - only match against tmp
 	mt	r1
 						// (save temp)isreg
@@ -1158,7 +1161,7 @@ _diskimg_mount:
 						//save_temp done
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 88
+						//../DeMiSTify/firmware/diskimg.c, line 89
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -1174,7 +1177,7 @@ _diskimg_mount:
 	st	r6
 						//save_temp done
 
-						//../DeMiSTify/firmware/diskimg.c, line 88
+						//../DeMiSTify/firmware/diskimg.c, line 89
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to r0) flags 62 type 3
 						// matchobj comparing flags 98 with 2
@@ -1189,25 +1192,59 @@ _diskimg_mount:
 	sgn
 	cmp	r0
 
-						//../DeMiSTify/firmware/diskimg.c, line 88
-	cond	SGT
+						//../DeMiSTify/firmware/diskimg.c, line 89
+	cond	LE
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l22
+	.lipcrel	l25
 		add	r7
-						// freereg r1
 
 						//../DeMiSTify/firmware/diskimg.c, line 90
+						//setreturn
+						// (obj to r0) flags 1 type 3
+						// matchobj comparing flags 1 with 1
+						// const
+						// matchobj comparing flags 1 with 1
+	.liconst	0
+	mr	r0
+
+						//../DeMiSTify/firmware/diskimg.c, line 91
+						//pcreltotemp
+	.lipcrel	l22
+	add	r7
+						// freereg r1
+l25: # 
+						// allocreg r1
+
+						//../DeMiSTify/firmware/diskimg.c, line 91
+						// (a/p assign)
+						// (prepobj r0)
+ 						// reg r1 - no need to prep
+						// (obj to tmp) flags 42 type a
+						// reg r5 - only match against tmp
+	mt	r5
+						// (save temp)isreg
+	mr	r1
+						//save_temp done
+
+						//../DeMiSTify/firmware/diskimg.c, line 91
+						//call
+						//pcreltotemp
+	.lipcrel	_configstring_setindex
+	add	r7
+						// Deferred popping of 0 bytes (0 in total)
+						// freereg r1
+
+						//../DeMiSTify/firmware/diskimg.c, line 92
 						// (a/p push)
 						// a: pushed 0, regnames[sp] r6
 						// (obj to tmp) flags 42 type a
-						// matchobj comparing flags 66 with 1
 						// reg r5 - only match against tmp
 	mt	r5
 	stdec	r6
 						// allocreg r3
 
-						//../DeMiSTify/firmware/diskimg.c, line 90
+						//../DeMiSTify/firmware/diskimg.c, line 92
 						// (bitwise/arithmetic) 	//ops: 0, 0, 4
 						// (obj to r3) flags 2 type 3
 						// matchobj comparing flags 2 with 66
@@ -1225,7 +1262,7 @@ _diskimg_mount:
 	mul	r3
 						// (save result) // isreg
 
-						//../DeMiSTify/firmware/diskimg.c, line 90
+						//../DeMiSTify/firmware/diskimg.c, line 92
 						// (bitwise/arithmetic) 	//ops: 0, 4, 4
 						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 82 type a
@@ -1237,7 +1274,7 @@ _diskimg_mount:
 						// (save result) // isreg
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 90
+						//../DeMiSTify/firmware/diskimg.c, line 92
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r1 - no need to prep
@@ -1249,43 +1286,39 @@ _diskimg_mount:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/diskimg.c, line 90
+						//../DeMiSTify/firmware/diskimg.c, line 92
 						//call
 						//pcreltotemp
 	.lipcrel	_FileOpen
 	add	r7
 						// Deferred popping of 4 bytes (4 in total)
 						// freereg r1
-						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 91
-						// Q1 disposable
-						// (bitwise/arithmetic) 	//ops: 4, 0, 2
-						//Special case - addt
-						// (prepobj r0)
- 						// reg r1 - no need to prep
+						//../DeMiSTify/firmware/diskimg.c, line 93
+						// (bitwise/arithmetic) 	//ops: 4, 0, 4
+						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 1 type a
 						// const
 	.liconst	8
-	addt	r3
-						// (save temp)isreg
-	mr	r1
-						//save_temp done
-						// freereg r3
-
-						//../DeMiSTify/firmware/diskimg.c, line 91
-						// (a/p assign)
-						// (prepobj r0)
- 						// reg r1 - no need to prep
-						// (obj to tmp) flags 6a type 3
-						// matchobj comparing flags 106 with 74
-						// deref 
-	ld	r1
-						// (save temp)isreg
-	mr	r1
-						//save_temp done
+	add	r3
+						// (save result) // isreg
 
 						//../DeMiSTify/firmware/diskimg.c, line 93
+						//FIXME convert
+						// (convert - reducing type 103 to 3
+						// (prepobj r0)
+ 						// reg r3 - no need to prep
+						// (obj to tmp) flags 6a type 103
+						// matchobj comparing flags 106 with 1
+						// deref 
+	ld	r3
+						//Saving to reg r3
+						// (save temp)isreg
+	mr	r3
+						//save_temp done
+						//No need to mask - same size
+
+						//../DeMiSTify/firmware/diskimg.c, line 95
 						// (a/p assign)
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 106
@@ -1305,7 +1338,7 @@ _diskimg_mount:
 	st	r0
 						//save_temp done
 
-						//../DeMiSTify/firmware/diskimg.c, line 94
+						//../DeMiSTify/firmware/diskimg.c, line 96
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r4 - no need to prep
@@ -1319,245 +1352,187 @@ _diskimg_mount:
 						// (save temp)store type 3
 	st	r4
 						//save_temp done
+						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 96
-						// (bitwise/arithmetic) 	//ops: 2, 0, 1
-						// (obj to r0) flags 4a type 3
+						//../DeMiSTify/firmware/diskimg.c, line 98
+						// (bitwise/arithmetic) 	//ops: 4, 0, 2
+						// (obj to r1) flags 4a type 3
 						// matchobj comparing flags 74 with 1
 						// matchobj comparing flags 74 with 1
-						// reg r1 - only match against tmp
-	mt	r1
-	mr	r0
+						// reg r3 - only match against tmp
+	mt	r3
+	mr	r1
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
 						// const
 						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
 	.liconst	255
-	and	r0
-						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x260
-	mt	r0
-	st	r4
-						// allocreg r2
+	and	r1
+						// (save result) // isreg
 
-						//../DeMiSTify/firmware/diskimg.c, line 96
-						// (bitwise/arithmetic) 	//ops: 2, 0, 3
-						// (obj to r2) flags 4a type 3
-						// matchobj comparing flags 74 with 608
-						// matchobj comparing flags 74 with 608
+						//../DeMiSTify/firmware/diskimg.c, line 98
+						// Q1 disposable
+						//FIXME convert
+						// (convert - reducing type 3 to 503
+						// (prepobj r0)
+ 						// reg r4 - no need to prep
+						// (obj to tmp) flags 4a type 3
+						// matchobj comparing flags 74 with 1
+						// matchobj comparing flags 74 with 1
 						// reg r1 - only match against tmp
 	mt	r1
-	mr	r2
+						// (save temp)store type 3
+	st	r4
+						//save_temp done
+						// freereg r1
+						// allocreg r1
+
+						//../DeMiSTify/firmware/diskimg.c, line 98
+						// (bitwise/arithmetic) 	//ops: 4, 0, 2
+						// (obj to r1) flags 4a type 3
+						// matchobj comparing flags 74 with 74
+						// matchobj comparing flags 74 with 1
+						// reg r3 - only match against tmp
+	mt	r3
+	mr	r1
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 608
+						// matchobj comparing flags 1 with 1
 						// const
 						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 608
+						// matchobj comparing flags 1 with 1
 	.liconst	8
 	sgn
-	shr	r2
+	shr	r1
 						// (save result) // isreg
 
-						//../DeMiSTify/firmware/diskimg.c, line 96
-						// Q1 disposable
-						// (bitwise/arithmetic) 	//ops: 3, 0, 1
-						// (obj to r0) flags 4a type 3
-						// matchobj comparing flags 74 with 1
-						// matchobj comparing flags 74 with 608
-						// reg r2 - only match against tmp
-	mt	r2
-	mr	r0
+						//../DeMiSTify/firmware/diskimg.c, line 98
+						// (bitwise/arithmetic) 	//ops: 2, 0, 2
+						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 1 type 3
-						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
 						// const
-						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
 	.liconst	255
-	and	r0
-						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x260
-	mt	r0
-	st	r4
-						// freereg r2
-						// allocreg r2
+	and	r1
+						// (save result) // isreg
 
-						//../DeMiSTify/firmware/diskimg.c, line 96
-						// (bitwise/arithmetic) 	//ops: 2, 0, 3
-						// (obj to r2) flags 4a type 3
-						// matchobj comparing flags 74 with 608
-						// matchobj comparing flags 74 with 608
+						//../DeMiSTify/firmware/diskimg.c, line 98
+						// Q1 disposable
+						//FIXME convert
+						// (convert - reducing type 3 to 503
+						// (prepobj r0)
+ 						// reg r4 - no need to prep
+						// (obj to tmp) flags 4a type 3
+						// matchobj comparing flags 74 with 1
+						// matchobj comparing flags 74 with 1
 						// reg r1 - only match against tmp
 	mt	r1
-	mr	r2
+						// (save temp)store type 3
+	st	r4
+						//save_temp done
+						// freereg r1
+						// allocreg r1
+
+						//../DeMiSTify/firmware/diskimg.c, line 98
+						// (bitwise/arithmetic) 	//ops: 4, 0, 2
+						// (obj to r1) flags 4a type 3
+						// matchobj comparing flags 74 with 74
+						// matchobj comparing flags 74 with 1
+						// reg r3 - only match against tmp
+	mt	r3
+	mr	r1
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 608
+						// matchobj comparing flags 1 with 1
 						// const
 						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 608
+						// matchobj comparing flags 1 with 1
 	.liconst	16
 	sgn
-	shr	r2
+	shr	r1
 						// (save result) // isreg
 
-						//../DeMiSTify/firmware/diskimg.c, line 96
-						// Q1 disposable
-						// (bitwise/arithmetic) 	//ops: 3, 0, 1
-						// (obj to r0) flags 4a type 3
-						// matchobj comparing flags 74 with 1
-						// matchobj comparing flags 74 with 608
-						// reg r2 - only match against tmp
-	mt	r2
-	mr	r0
+						//../DeMiSTify/firmware/diskimg.c, line 98
+						// (bitwise/arithmetic) 	//ops: 2, 0, 2
+						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 1 type 3
-						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
 						// const
-						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
+						// matchobj comparing flags 1 with 1
 	.liconst	255
-	and	r0
-						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x260
-	mt	r0
-	st	r4
-						// freereg r2
+	and	r1
+						// (save result) // isreg
 
-						//../DeMiSTify/firmware/diskimg.c, line 96
+						//../DeMiSTify/firmware/diskimg.c, line 98
 						// Q1 disposable
-						// (bitwise/arithmetic) 	//ops: 2, 0, 1
-						// (obj to r0) flags 4a type 3
-						// matchobj comparing flags 74 with 608
-						// matchobj comparing flags 74 with 608
+						//FIXME convert
+						// (convert - reducing type 3 to 503
+						// (prepobj r0)
+ 						// reg r4 - no need to prep
+						// (obj to tmp) flags 4a type 3
+						// matchobj comparing flags 74 with 1
+						// matchobj comparing flags 74 with 1
 						// reg r1 - only match against tmp
 	mt	r1
-	mr	r0
+						// (save temp)store type 3
+	st	r4
+						//save_temp done
+						// freereg r1
+						// allocreg r1
+
+						//../DeMiSTify/firmware/diskimg.c, line 98
+						// (bitwise/arithmetic) 	//ops: 4, 0, 2
+						// (obj to r1) flags 4a type 3
+						// matchobj comparing flags 74 with 74
+						// matchobj comparing flags 74 with 1
+						// reg r3 - only match against tmp
+	mt	r3
+	mr	r1
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
 						// const
 						// matchobj comparing flags 1 with 74
-						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
 	.liconst	24
 	sgn
-	shr	r0
-						// (save result) // not reg
-						// Store_reg to type 0x3, flags 0x260
-	mt	r0
+	shr	r1
+						// (save result) // isreg
+
+						//../DeMiSTify/firmware/diskimg.c, line 98
+						// Q1 disposable
+						//FIXME convert
+						// (convert - reducing type 3 to 503
+						// (prepobj r0)
+ 						// reg r4 - no need to prep
+						// (obj to tmp) flags 4a type 3
+						// matchobj comparing flags 74 with 1
+						// matchobj comparing flags 74 with 1
+						// reg r1 - only match against tmp
+	mt	r1
+						// (save temp)store type 3
 	st	r4
+						//save_temp done
 						// freereg r1
-
-						//../DeMiSTify/firmware/diskimg.c, line 97
-						// (a/p assign)
-						// (prepobj r0)
- 						// reg r4 - no need to prep
-						// (obj to tmp) flags 1 type 503
-						// matchobj comparing flags 1 with 608
-						// matchobj comparing flags 1 with 608
-						// const
-						// matchobj comparing flags 1 with 608
-						// matchobj comparing flags 1 with 608
-	.liconst	0
-						// (save temp)store type 3
-	st	r4
-						//save_temp done
-
-						//../DeMiSTify/firmware/diskimg.c, line 97
-						// (a/p assign)
-						// (prepobj r0)
- 						// reg r4 - no need to prep
-						// (obj to tmp) flags 1 type 503
-						// matchobj comparing flags 1 with 1
-
-			// required value found in tmp
-						// (save temp)store type 3
-	st	r4
-						//save_temp done
-
-						//../DeMiSTify/firmware/diskimg.c, line 97
-						// (a/p assign)
-						// (prepobj r0)
- 						// reg r4 - no need to prep
-						// (obj to tmp) flags 1 type 503
-						// matchobj comparing flags 1 with 1
-
-			// required value found in tmp
-						// (save temp)store type 3
-	st	r4
-						//save_temp done
-
-						//../DeMiSTify/firmware/diskimg.c, line 97
-						// (a/p assign)
-						// (prepobj r0)
- 						// reg r4 - no need to prep
-						// (obj to tmp) flags 1 type 503
-						// matchobj comparing flags 1 with 1
-
-			// required value found in tmp
-						// (save temp)store type 3
-	st	r4
-						//save_temp done
-
-						//../DeMiSTify/firmware/diskimg.c, line 98
-						// (a/p assign)
-						// (prepobj r0)
- 						// reg r4 - no need to prep
-						// (obj to tmp) flags 1 type 503
-						// matchobj comparing flags 1 with 1
-
-			// required value found in tmp
-						// (save temp)store type 3
-	st	r4
-						//save_temp done
-
-						//../DeMiSTify/firmware/diskimg.c, line 98
-						// (a/p assign)
-						// (prepobj r0)
- 						// reg r4 - no need to prep
-						// (obj to tmp) flags 1 type 503
-						// matchobj comparing flags 1 with 1
-
-			// required value found in tmp
-						// (save temp)store type 3
-	st	r4
-						//save_temp done
-
-						//../DeMiSTify/firmware/diskimg.c, line 98
-						// (a/p assign)
-						// (prepobj r0)
- 						// reg r4 - no need to prep
-						// (obj to tmp) flags 1 type 503
-						// matchobj comparing flags 1 with 1
-
-			// required value found in tmp
-						// (save temp)store type 3
-	st	r4
-						//save_temp done
-
-						//../DeMiSTify/firmware/diskimg.c, line 98
-						// (a/p assign)
-						// (prepobj r0)
- 						// reg r4 - no need to prep
-						// (obj to tmp) flags 1 type 503
-						// matchobj comparing flags 1 with 1
-
-			// required value found in tmp
-						// (save temp)store type 3
-	st	r4
-						//save_temp done
 
 						//../DeMiSTify/firmware/diskimg.c, line 99
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
+						// matchobj comparing flags 1 with 74
 						// matchobj comparing flags 1 with 1
-
-			// required value found in tmp
+						// const
+						// matchobj comparing flags 1 with 74
+						// matchobj comparing flags 1 with 1
+	.liconst	0
 						// (save temp)store type 3
 	st	r4
 						//save_temp done
@@ -1601,14 +1576,108 @@ _diskimg_mount:
 						//../DeMiSTify/firmware/diskimg.c, line 100
 						// (a/p assign)
 						// (prepobj r0)
+ 						// reg r4 - no need to prep
+						// (obj to tmp) flags 1 type 503
+						// matchobj comparing flags 1 with 1
+
+			// required value found in tmp
+						// (save temp)store type 3
+	st	r4
+						//save_temp done
+
+						//../DeMiSTify/firmware/diskimg.c, line 100
+						// (a/p assign)
+						// (prepobj r0)
+ 						// reg r4 - no need to prep
+						// (obj to tmp) flags 1 type 503
+						// matchobj comparing flags 1 with 1
+
+			// required value found in tmp
+						// (save temp)store type 3
+	st	r4
+						//save_temp done
+
+						//../DeMiSTify/firmware/diskimg.c, line 100
+						// (a/p assign)
+						// (prepobj r0)
+ 						// reg r4 - no need to prep
+						// (obj to tmp) flags 1 type 503
+						// matchobj comparing flags 1 with 1
+
+			// required value found in tmp
+						// (save temp)store type 3
+	st	r4
+						//save_temp done
+
+						//../DeMiSTify/firmware/diskimg.c, line 100
+						// (a/p assign)
+						// (prepobj r0)
+ 						// reg r4 - no need to prep
+						// (obj to tmp) flags 1 type 503
+						// matchobj comparing flags 1 with 1
+
+			// required value found in tmp
+						// (save temp)store type 3
+	st	r4
+						//save_temp done
+
+						//../DeMiSTify/firmware/diskimg.c, line 101
+						// (a/p assign)
+						// (prepobj r0)
+ 						// reg r4 - no need to prep
+						// (obj to tmp) flags 1 type 503
+						// matchobj comparing flags 1 with 1
+
+			// required value found in tmp
+						// (save temp)store type 3
+	st	r4
+						//save_temp done
+
+						//../DeMiSTify/firmware/diskimg.c, line 101
+						// (a/p assign)
+						// (prepobj r0)
+ 						// reg r4 - no need to prep
+						// (obj to tmp) flags 1 type 503
+						// matchobj comparing flags 1 with 1
+
+			// required value found in tmp
+						// (save temp)store type 3
+	st	r4
+						//save_temp done
+
+						//../DeMiSTify/firmware/diskimg.c, line 101
+						// (a/p assign)
+						// (prepobj r0)
+ 						// reg r4 - no need to prep
+						// (obj to tmp) flags 1 type 503
+						// matchobj comparing flags 1 with 1
+
+			// required value found in tmp
+						// (save temp)store type 3
+	st	r4
+						//save_temp done
+
+						//../DeMiSTify/firmware/diskimg.c, line 101
+						// (a/p assign)
+						// (prepobj r0)
+ 						// reg r4 - no need to prep
+						// (obj to tmp) flags 1 type 503
+						// matchobj comparing flags 1 with 1
+
+			// required value found in tmp
+						// (save temp)store type 3
+	st	r4
+						//save_temp done
+
+						//../DeMiSTify/firmware/diskimg.c, line 102
+						// (a/p assign)
+						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
-						// matchobj comparing flags 161 with 608
+						// matchobj comparing flags 161 with 1
 						// deref
 						// const to r0
 						// matchobj comparing flags 1 with 1
-						// matchobj comparing flags 1 with 608
-	.liconst	-48
-	mr	r0
+						// matchobj comparing flags 1 with 1
 						// (obj to tmp) flags 1 type 503
 						// matchobj comparing flags 1 with 1
 						// matchobj comparing flags 1 with 1
@@ -1620,7 +1689,7 @@ _diskimg_mount:
 	st	r0
 						//save_temp done
 
-						//../DeMiSTify/firmware/diskimg.c, line 103
+						//../DeMiSTify/firmware/diskimg.c, line 105
 						// (a/p push)
 						// a: pushed 0, regnames[sp] r6
 						// (obj to tmp) flags 2 type 3
@@ -1635,7 +1704,7 @@ _diskimg_mount:
 	stdec	r6
 						// allocreg r1
 
-						//../DeMiSTify/firmware/diskimg.c, line 103
+						//../DeMiSTify/firmware/diskimg.c, line 105
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r1 - no need to prep
@@ -1650,7 +1719,7 @@ _diskimg_mount:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/diskimg.c, line 103
+						//../DeMiSTify/firmware/diskimg.c, line 105
 						//call
 						//pcreltotemp
 	.lipcrel	_spi_uio_cmd8
@@ -1660,26 +1729,25 @@ _diskimg_mount:
 	.liconst	8
 	add	r6
 						// freereg r1
+
+						//../DeMiSTify/firmware/diskimg.c, line 106
+						// Q1 disposable
+						//setreturn
+						// (obj to r0) flags 4a type 3
+						// matchobj comparing flags 74 with 1
+						// reg r3 - only match against tmp
+	mt	r3
+	mr	r0
+						// freereg r3
 l22: # 
 						// allocreg r1
 						// freereg r1
 						// freereg r4
 						// freereg r5
-	.liconst	-4
-	sub	r6
-	ldinc	r6
-	mr	r5
-
-	ldinc	r6
-	mr	r4
-
-	ldinc	r6
-	mr	r3
-
-	ldinc	r6
-	mr	r7
+	ldinc	r6	// shortest way to add 4 to sp
+	.lipcrel	.functiontail, 0
+	add	r7
 
 	.section	.bss.4
-	.align	4
 	.global	_diskimg
 	.comm	_diskimg,40

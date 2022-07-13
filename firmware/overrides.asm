@@ -114,6 +114,16 @@ l5: #
 	mr	r0
 						// freereg r1
 						// freereg r3
+	.lipcrel	.functiontail, 4
+	add	r7
+
+.functiontail:
+	ldinc	r6
+	mr	r5
+
+	ldinc	r6
+	mr	r4
+
 	ldinc	r6
 	mr	r3
 
@@ -121,7 +131,6 @@ l5: #
 	mr	r7
 
 	.section	.rodata.1
-	.align	4
 l6:
 	.byte	83
 	.byte	104
@@ -148,19 +157,16 @@ l6:
 	.byte	50
 	.byte	0
 	.section	.data.2
-	.align	4
 	.global	_bootrom_name
 _bootrom_name:
 						// Declaring from tree
 						// static
 	.ref	l1
 	.section	.data.3
-	.align	4
 	.global	_romtype
 _romtype:
 	.byte	0
 	.section	.rodata.4
-	.align	4
 l1:
 	.byte	65
 	.byte	85

@@ -43,13 +43,13 @@ _ps2_ringbuffer_init:
 						// Z disposable
 						// (a/p assign)
 						// (prepobj r0)
- 						// reg r1 - no need to prep
+ 						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 501
 						// matchobj comparing flags 1 with 1
 
 			// required value found in tmp
 						// (save temp)store type 1
-	stbinc	r1
+	stbinc	r2
 						//Disposable, postinc doesn't matter.
 						//save_temp done
 						// freereg r1
@@ -360,6 +360,7 @@ l3: #
 						// freereg r5
 	.liconst	-12
 	sub	r6
+.functiontail:
 	ldinc	r6
 	mr	r5
 
@@ -578,14 +579,8 @@ _ps2_ringbuffer_receive:
 						// matchobj comparing flags 1 with 10
 	.liconst	-12
 	sub	r6
-	ldinc	r6
-	mr	r4
-
-	ldinc	r6
-	mr	r3
-
-	ldinc	r6
-	mr	r7
+	.lipcrel	.functiontail, 2
+	add	r7
 
 	//registers used:
 		//r1: yes
@@ -881,8 +876,7 @@ l9: #
 	.global	_PS2Handler
 _PS2Handler:
 	stdec	r6
-	.liconst	-4
-	add	r6
+	stdec	r6	// shortest way to decrement sp by 4
 						// allocreg r2
 
 						//../DeMiSTify/firmware/ps2.c, line 85
@@ -893,20 +887,23 @@ _PS2Handler:
 						// Flow control - popping 0 + 0 bytes
 
 						//../DeMiSTify/firmware/ps2.c, line 87
-						// (a/p assign)
+						//FIXME convert
+						// (convert - reducing type 503 to 3
 						// (prepobj r0)
  						// reg r2 - no need to prep
-						// (obj to tmp) flags 21 type 3
+						// (obj to tmp) flags 21 type 503
 						// const/deref
 						// (prepobj tmp)
  						// deref
 						// const to tmp
 	.liconst	-32
-						//sizemod based on type 0x3
+						//sizemod based on type 0x503
 	ldt
+						//Saving to reg r2
 						// (save temp)isreg
 	mr	r2
 						//save_temp done
+						//No need to mask - same size
 						// allocreg r1
 
 						//../DeMiSTify/firmware/ps2.c, line 88
@@ -990,8 +987,7 @@ l16: #
 						// Deferred popping of 0 bytes (0 in total)
 						// freereg r1
 						// freereg r2
-	.liconst	-4
-	sub	r6
+	ldinc	r6	// shortest way to add 4 to sp
 	ldinc	r6
 	mr	r7
 
@@ -1063,6 +1059,5 @@ _PS2Init:
 	mr	r7
 
 	.section	.bss.6
-	.align	4
 	.global	_kbbuffer
 	.comm	_kbbuffer,10

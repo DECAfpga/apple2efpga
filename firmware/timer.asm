@@ -140,15 +140,24 @@ l5: #
 						// (save temp)isreg
 	mr	r2
 						//save_temp done
+						// freereg r1
 l6: # 
+						// allocreg r1
 
 						//../DeMiSTify/firmware/timer.c, line 14
 						// Q1 disposable
-						//setreturn
-						// (obj to r0) flags 42 type 103
+						//FIXME convert
+						// (convert - reducing type 3 to 103
+						// (prepobj r0)
+ 						// reg r1 - no need to prep
+						// (obj to tmp) flags 4a type 3
 						// reg r2 - only match against tmp
 	mt	r2
+						//Saving to reg r1
+						// (save temp)isreg
 	mr	r0
+						//save_temp done
+						//No need to mask - same size
 						// freereg r1
 						// freereg r2
 	ldinc	r6
