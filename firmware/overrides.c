@@ -1,36 +1,43 @@
-// Remove anything that is not needed
+#include "menu.h"
+#include "keyboard.h"
+#include "interrupts.h"
 
-// // Initial ROM [Not needed if already defined in config.h]
-// const char *bootrom_name="NEXT186 ROM";
-
-//Note the filename must be in 8/3 format with no dot and capital letters. 
-//If the name have less than 8 letters then leave spaces so total characters must be 11.
-
-// // Initial VHD
-// const char *bootvhd_name="NEXT186 VHD";
-// char *autoboot()
-// {
-// 	char *result=0;
-// 	if(!LoadROM(bootrom_name))
-// 		result="ROM loading failed";
-// 	loadimage(bootvhd_name,0);
-// 	return(result);
-// }
-
-//NOTE: if having problems loading VHD you could try to load first VHD and then the ROM
+#include "c64keys.c"
 
 
-// Initial ROM   //Hack to show OSD at core bootup
-const char *bootrom_name="AUTOBOOTNES";
-extern unsigned char romtype=0;
+extern unsigned char romtype;
+
+/* Enable long-press for hard-reset */
+
+extern struct menu_entry menu[];
+void cycle(int row);
+void toggle(int row)
+{
+	int restore=0;
+	if(menu_longpress && menu[row].u.opt.shift==0)
+	{
+		statusword_cycle(7,1,2); /* Toggle hard reset bit */
+		statusword_cycle(7,1,2);
+	}
+	else
+	{
+		cycle(row);
+		cycle(row);
+	}
+}
+
+int UpdateKeys(int blockkeys)
+{
+	handlec64keys();
+	return(HandlePS2RawCodes(blockkeys));
+}
 
 char *autoboot()
 {
-	char *result=0;
-	romtype=0;
-//	loadimage("NEXT186 VHD",0);
-	if(!LoadROM(bootrom_name))
-		result="Show/hide OSD = key F12";
+	char *result="Show/hide OSD = key F12";
+
+	initc64keys();
+
 	return(result);
 }
 

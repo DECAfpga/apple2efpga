@@ -9,7 +9,11 @@ set_time_format -unit ns -decimal_places 3
 #**************************************************************
 
 set sysclk ${topmodule}pll|altpll_component|auto_generated|pll1|clk[0]
+set subclk ${topmodule}pll|altpll_component|auto_generated|pll1|clk[1]
 set sdram_clk ${topmodule}pll|altpll_component|auto_generated|pll1|clk[0]
+
+set_clock_groups -asynchronous -group [get_clocks $subclk] -group spiclk
+set_clock_groups -asynchronous -group [get_clocks $sysclk] -group spiclk
 
 #**************************************************************
 # Set Input Delay
