@@ -35,46 +35,58 @@ module mist_sd_card
 	output  [7:0] sd_buff_din,
 	input         sd_buff_wr,
 
-	input         save_track,
 	input         change,
+	input         mount,
 	input   [5:0] track,
+	output reg    ready = 0,
+	input         active,
 
-	output [12:0] ram_addr,
-	output  [7:0] ram_di,
-	input   [7:0] ram_do,
-	output        ram_we,
+	input  [12:0] ram_addr,
+	output  [7:0] ram_do,
+	input   [7:0] ram_di,
+	input         ram_we,
 	output reg    busy
 );
 
 assign sd_lba = lba;
-assign ram_addr = { rel_lba, sd_buff_addr};
-assign ram_di = sd_buff_dout;
-assign sd_buff_din = ram_do;
-assign ram_we = sd_buff_wr;
 
-reg [31:0] lba;
-reg [3:0]  rel_lba;
+reg  [31:0] lba;
+reg   [3:0] rel_lba;
 
 always @(posedge clk) begin
 	reg old_ack;
 	reg [5:0] cur_track = 0;
-	reg old_change, ready = 0;
+	reg old_change;
 	reg saving = 0;
+	reg dirty = 0;
 
 	old_change <= change;
-	if(~old_change & change) ready <= 1;
-
 	old_ack <= sd_ack;
+
 	if(sd_ack) {sd_rd,sd_wr} <= 0;
 
+	if(ready && ram_we) dirty <= 1;
+
+	if(~old_change & change) begin
+		ready <= mount;
+		cur_track <= 'b111111;
+		busy  <= 0;
+		sd_rd <= 0;
+		sd_wr <= 0;
+		saving<= 0;
+		dirty <= 0;
+	end
+	else
 	if(reset) begin
 		cur_track <= 'b111111;
 		busy  <= 0;
 		sd_rd <= 0;
 		sd_wr <= 0;
 		saving<= 0;
+		dirty <= 0;
 	end
 	else
+
 	if(busy) begin
 		if(old_ack && ~sd_ack) begin
 			if(rel_lba != 4'd12) begin
@@ -94,28 +106,44 @@ always @(posedge clk) begin
 			else
 			begin
 				busy <= 0;
+				dirty <= 0;
 			end
 		end
 	end
 	else
-	if(ready) begin
-		if(save_track && cur_track != 'b111111) begin
+	if(ready && ((cur_track != track) || (old_change && ~change) || (dirty && ~active)))
+		if (dirty && cur_track != 'b111111) begin
 			saving <= 1;
-			lba <= track * 8'd13;
+			lba <= cur_track * 8'd13;
 			rel_lba <= 0;
 			sd_wr <= 1;
 			busy <= 1;
 		end
 		else
-		if((cur_track != track) || (old_change && ~change)) begin
+		begin
 			saving <= 0;
 			cur_track <= track;
 			rel_lba <= 0;
 			lba <= track * 8'd13; //track size = 1a00h
 			sd_rd <= 1;
 			busy <= 1;
+			dirty <= 0;
 		end
-	end
+end
+
+// Dual port track buffer
+reg   [7:0] track_ram[13*512];
+
+// IO controller side
+always @(posedge clk) begin
+	sd_buff_din <= track_ram[{rel_lba, sd_buff_addr}];
+	if (sd_buff_wr & sd_ack) track_ram[{rel_lba, sd_buff_addr}] <= sd_buff_dout;
+end
+
+// Disk controller side
+always @(posedge clk) begin
+	ram_do <= track_ram[ram_addr];
+	if (ram_we) track_ram[ram_addr] <= ram_di;
 end
 
 endmodule

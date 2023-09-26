@@ -30,7 +30,7 @@ entity mist_top is
   port (
     -- Clocks
     
-    CLOCK_27    : in std_logic_vector(1 downto 0); -- 27 MHz
+    CLOCK_27    : in std_logic; -- 27 MHz
 
 
     -- SDRAM
@@ -85,9 +85,12 @@ architecture datapath of mist_top is
 
   constant CONF_STR : string :=
    "AppleII;;"&
-   "S0,NIB,Load Floppy;"&
+   "S0U,NIB,Load Disk 0;"&
+   "S1U,NIB,Load Disk 1;"&
+   "O89,Write Protect,None,Disk 0,Disk 1, Disk 0&1;"&
    "O1,CPU Type,6502,65C02;"&
    "O23,Monitor,Color,B&W,Green,Amber;"&
+   "O4,Machine Type,NTSC,PAL;"&
    "OBC,Scanlines,Off,25%,50%,75%;"&
    "O5,Joysticks,Normal,Swapped;"&
    "O6,Mockingboard S4,off,on;"&
@@ -121,15 +124,17 @@ architecture datapath of mist_top is
             sd_buff_din    : out std_logic_vector(7 downto 0);
             sd_buff_wr     : in  std_logic;
 
-            ram_addr       : out std_logic_vector(12 downto 0);
-            ram_di         : out std_logic_vector(7 downto 0);
-            ram_do         : in  std_logic_vector(7 downto 0);
-            ram_we         : out std_logic;
+            ram_addr       : in  unsigned(12 downto 0);
+            ram_di         : in  unsigned( 7 downto 0);
+            ram_do         : out unsigned( 7 downto 0);
+            ram_we         : in  std_logic;
 
-            save_track     : in  std_logic;
             change         : in  std_logic;                     -- Force reload as disk may have changed
+            mount          : in  std_logic;                     -- umount(0)/mount(1)
             track          : in  std_logic_vector(5 downto 0);  -- Track number (0-34)
             busy           : out std_logic;
+            ready          : out std_logic;
+            active         : in  std_logic;
 
             clk            : in  std_logic;     -- System clock
             reset          : in  std_logic
@@ -145,7 +150,7 @@ architecture datapath of mist_top is
           sd_we : out std_logic;
           sd_ras : out std_logic;
           sd_cas : out std_logic;
-          init : in std_logic;
+          init_n : in std_logic;
           clk : in std_logic;
           clkref : in std_logic;
           din : in std_logic_vector(7 downto 0);
@@ -175,6 +180,7 @@ architecture datapath of mist_top is
   signal GAMEPORT : std_logic_vector(7 downto 0);
   signal scandoubler_disable : std_logic;
   signal ypbpr : std_logic;
+  signal no_csync : std_logic;
 
   signal K : unsigned(7 downto 0);
   signal read_key : std_logic;
@@ -185,12 +191,22 @@ architecture datapath of mist_top is
   signal reset : std_logic;
 
   signal D1_ACTIVE, D2_ACTIVE : std_logic;
-  signal track_addr : unsigned(13 downto 0);
-  signal TRACK_RAM_ADDR : unsigned(12 downto 0);
-  signal TRACK_RAM_DI : unsigned(7 downto 0);
-  signal TRACK_RAM_WE : std_logic;
-  signal track : unsigned(5 downto 0);
+  signal TRACK1_RAM_BUSY : std_logic;
+  signal TRACK1_RAM_ADDR : unsigned(12 downto 0);
+  signal TRACK1_RAM_DI : unsigned(7 downto 0);
+  signal TRACK1_RAM_DO : unsigned(7 downto 0);
+  signal TRACK1_RAM_WE : std_logic;
+  signal TRACK1 : unsigned(5 downto 0);
+  signal TRACK2_RAM_BUSY : std_logic;
+  signal TRACK2_RAM_ADDR : unsigned(12 downto 0);
+  signal TRACK2_RAM_DI : unsigned(7 downto 0);
+  signal TRACK2_RAM_DO : unsigned(7 downto 0);
+  signal TRACK2_RAM_WE : std_logic;
+  signal TRACK2 : unsigned(5 downto 0);
+  signal DISK_READY : std_logic_vector(1 downto 0);
   signal disk_change : std_logic_vector(1 downto 0);
+  signal disk_size : std_logic_vector(63 downto 0);
+  signal disk_mount : std_logic;
 
   signal downl : std_logic := '0';
   signal io_index : std_logic_vector(4 downto 0);
@@ -221,12 +237,14 @@ architecture datapath of mist_top is
   signal joy        : std_logic_vector(5 downto 0);
   signal joy0       : std_logic_vector(31 downto 0);
   signal joy1       : std_logic_vector(31 downto 0);
-  signal joy_an0    : std_logic_vector(15 downto 0);
-  signal joy_an1    : std_logic_vector(15 downto 0);
+  signal joy_an0    : std_logic_vector(31 downto 0);
+  signal joy_an1    : std_logic_vector(31 downto 0);
   signal joy_an     : std_logic_vector(15 downto 0);
-  signal status     : std_logic_vector(31 downto 0);
+  signal status     : std_logic_vector(63 downto 0);
   signal ps2Clk     : std_logic;
   signal ps2Data    : std_logic;
+
+  signal st_wp      : std_logic_vector( 1 downto 0);
   
   signal psg_audio_l : unsigned(9 downto 0);
   signal psg_audio_r : unsigned(9 downto 0);
@@ -236,13 +254,19 @@ architecture datapath of mist_top is
   signal sd_lba:  std_logic_vector(31 downto 0);
   signal sd_rd:   std_logic_vector(1 downto 0) := (others => '0');
   signal sd_wr:   std_logic_vector(1 downto 0) := (others => '0');
-  signal sd_ack:  std_logic;
+  signal sd_ack:  std_logic_vector(1 downto 0);
+
+  signal SD_LBA1:  std_logic_vector(31 downto 0);
+  signal SD_LBA2:  std_logic_vector(31 downto 0);
   
   -- data from io controller to sd card emulation
   signal sd_data_in: std_logic_vector(7 downto 0);
   signal sd_data_out: std_logic_vector(7 downto 0);
   signal sd_data_out_strobe:  std_logic;
   signal sd_buff_addr: std_logic_vector(8 downto 0);
+
+  signal SD_DATA_IN1: std_logic_vector(7 downto 0);
+  signal SD_DATA_IN2: std_logic_vector(7 downto 0);
   
   -- sd card emulation
   signal sd_cs:	std_logic;
@@ -255,9 +279,12 @@ architecture datapath of mist_top is
   signal joyx       : std_logic;
   signal joyy       : std_logic;
   signal pdl_strobe : std_logic;
+  signal open_apple : std_logic;
+  signal closed_apple : std_logic;
 
 begin
 
+  st_wp <= status(9 downto 8);
 
   -- In the Apple ][, this was a 555 timer
   power_on : process(CLK_14M)
@@ -283,7 +310,7 @@ begin
   pll : entity work.mist_clk 
   port map (
     areset => '0',
-    inclk0 => CLOCK_27(0),
+    inclk0 => CLOCK_27,
     c0     => CLK_28M,
     c1     => CLK_14M,
     locked => pll_locked
@@ -294,9 +321,9 @@ begin
   -- GAMEPORT input bits:
   --  7    6    5    4    3   2   1    0
   -- pdl3 pdl2 pdl1 pdl0 pb3 pb2 pb1 casette
-  GAMEPORT <=  "00" & joyy & joyx & "0" & joy(5) & joy(4) & UART_RX;
+  GAMEPORT <=  "00" & joyy & joyx & "0" & (joy(5) or closed_apple) & (joy(4) or open_apple) & UART_RX;
   
-  joy_an <= joy_an0 when status(5)='0' else joy_an1;
+  joy_an <= joy_an0(15 downto 0) when status(5)='0' else joy_an1(15 downto 0);
   joy <= joy0(5 downto 0) when status(5)='0' else joy1(5 downto 0);
   
   process(CLK_14M, pdl_strobe)
@@ -354,7 +381,7 @@ begin
               sd_cas => SDRAM_nCAS,
               clk => CLK_28M,
               clkref => CLK_2M,
-              init => not pll_locked,
+              init_n => pll_locked,
               din => ram_di,
               addr => ram_addr,
               we => ram_we,
@@ -371,6 +398,7 @@ begin
 
   core : entity work.apple2 port map (
     CLK_14M        => CLK_14M,
+    PALMODE        => status(4),
     CLK_2M         => CLK_2M,
     PHASE_ZERO     => PHASE_ZERO,
     PHASE_ZERO_R   => PHASE_ZERO_R,
@@ -426,7 +454,9 @@ begin
     reset    => reset,
     reads    => read_key,
     K        => K,
-    akd      => akd
+    akd      => akd,
+    open_apple => open_apple,
+    closed_apple => closed_apple
     );
 
   disk : entity work.disk_ii port map (
@@ -436,41 +466,85 @@ begin
     IO_SELECT      => IO_SELECT(6),
     DEVICE_SELECT  => DEVICE_SELECT(6),
     RESET          => reset,
+    DISK_READY     => DISK_READY,
     A              => ADDR,
     D_IN           => D,
     D_OUT          => DISK_DO,
-    TRACK          => TRACK,
-    TRACK_ADDR     => TRACK_ADDR,
     D1_ACTIVE      => D1_ACTIVE,
     D2_ACTIVE      => D2_ACTIVE,
-    ram_write_addr => TRACK_RAM_ADDR,
-    ram_di         => TRACK_RAM_DI,
-    ram_we         => TRACK_RAM_WE
+    WP             => st_wp,
+    -- track buffer interface for disk 1
+    TRACK1         => TRACK1,
+    TRACK1_ADDR    => TRACK1_RAM_ADDR,
+    TRACK1_DO      => TRACK1_RAM_DO,
+    TRACK1_DI      => TRACK1_RAM_DI,
+    TRACK1_WE      => TRACK1_RAM_WE,
+    TRACK1_BUSY    => TRACK1_RAM_BUSY,
+    -- track buffer interface for disk 2
+    TRACK2         => TRACK2,
+    TRACK2_ADDR    => TRACK2_RAM_ADDR,
+    TRACK2_DO      => TRACK2_RAM_DO,
+    TRACK2_DI      => TRACK2_RAM_DI,
+    TRACK2_WE      => TRACK2_RAM_WE,
+    TRACK2_BUSY    => TRACK2_RAM_BUSY
     );
 
-  sdcard_interface: mist_sd_card port map (
-    clk       => CLK_14M,
-    reset     => reset,
+  disk_mount <= '0' when disk_size = x"0000000000000000" else '1';
+  sd_lba <= SD_LBA2 when sd_rd(1) = '1' or sd_wr(1) = '1' else SD_LBA1;
+  sd_data_in <= SD_DATA_IN2 when sd_ack(1) = '1' else SD_DATA_IN1;
+  
+  sdcard_interface1: mist_sd_card port map (
+    clk          => CLK_14M,
+    reset        => reset,
 
-    unsigned(ram_addr) => TRACK_RAM_ADDR, -- out unsigned(13 downto 0);
-    unsigned(ram_di)   => TRACK_RAM_DI,   -- out unsigned(7 downto 0);
-    ram_do   => (others=>'0'),       -- in  unsigned(7 downto 0);
-    ram_we   => TRACK_RAM_WE,
+    ram_addr     => TRACK1_RAM_ADDR, -- in unsigned(12 downto 0);
+    ram_di       => TRACK1_RAM_DI,   -- in unsigned(7 downto 0);
+    ram_do       => TRACK1_RAM_DO,   -- out unsigned(7 downto 0);
+    ram_we       => TRACK1_RAM_WE,
 
-    track     => std_logic_vector(TRACK),
-    busy          => open,
-    save_track    => '0',
-    change        => disk_change(0),
+    track        => std_logic_vector(TRACK1),
+    busy         => TRACK1_RAM_BUSY,
+    change       => DISK_CHANGE(0),
+    mount        => disk_mount,
+    ready        => DISK_READY(0),
+    active       => D1_ACTIVE,
 
     sd_buff_addr => sd_buff_addr,
     sd_buff_dout => sd_data_out,
-    sd_buff_din  => sd_data_in,
+    sd_buff_din  => SD_DATA_IN1,
     sd_buff_wr   => sd_data_out_strobe,
 
-    sd_lba  => sd_lba,
-    sd_rd   => sd_rd(0),
-    sd_wr   => sd_wr(0),
-    sd_ack  => sd_ack
+    sd_lba       => SD_LBA1,
+    sd_rd        => sd_rd(0),
+    sd_wr        => sd_wr(0),
+    sd_ack       => sd_ack(0)
+  );
+
+  sdcard_interface2: mist_sd_card port map (
+    clk          => CLK_14M,
+    reset        => reset,
+
+    ram_addr     => TRACK2_RAM_ADDR, -- in unsigned(12 downto 0);
+    ram_di       => TRACK2_RAM_DI,   -- in unsigned(7 downto 0);
+    ram_do       => TRACK2_RAM_DO,   -- out unsigned(7 downto 0);
+    ram_we       => TRACK2_RAM_WE,
+
+    track        => std_logic_vector(TRACK2),
+    busy         => TRACK2_RAM_BUSY,
+    change       => DISK_CHANGE(1),
+    mount        => disk_mount,
+    ready        => DISK_READY(1),
+    active       => D2_ACTIVE,
+
+    sd_buff_addr => sd_buff_addr,
+    sd_buff_dout => sd_data_out,
+    sd_buff_din  => SD_DATA_IN2,
+    sd_buff_wr   => sd_data_out_strobe,
+
+    sd_lba       => SD_LBA2,
+    sd_rd        => sd_rd(1),
+    sd_wr        => sd_wr(1),
+    sd_ack       => sd_ack(1)
   );
 
   LED <= not (D1_ACTIVE or D2_ACTIVE);
@@ -516,9 +590,9 @@ begin
       dac_o 	=> AUDIO_R
       );
 
-  user_io_d : user_io
+  user_io_inst : user_io
     generic map (STRLEN => CONF_STR'length)
-    
+
     port map (
       clk_sys => CLK_14M,
       clk_sd => CLK_14M,
@@ -536,11 +610,12 @@ begin
       BUTTONS => buttons,
       scandoubler_disable => scandoubler_disable,
       ypbpr => ypbpr,
+      no_csync => no_csync,
       -- connection to io controller
       sd_lba  => sd_lba,
       sd_rd   => sd_rd,
       sd_wr   => sd_wr,
-      sd_ack  => sd_ack,
+      sd_ack_x => sd_ack,
       sd_ack_conf => open,
       sd_sdhc => '1',
       sd_conf => '0',
@@ -549,6 +624,7 @@ begin
       sd_din => sd_data_in,
       sd_buff_addr => sd_buff_addr,
       img_mounted => disk_change,
+      img_size => disk_size,
       ps2_kbd_clk => ps2Clk,
       ps2_kbd_data => ps2Data
     );
@@ -560,9 +636,10 @@ begin
     port map (
       clk_sys => CLK_28M,
       scanlines   => status(12 downto 11),
-      ce_divider => '1',
+      ce_divider => "001",
       scandoubler_disable => scandoubler_disable,
       ypbpr => ypbpr,
+      no_csync => no_csync,
       rotate => "00",
 
       SPI_DI => SPI_DI,
