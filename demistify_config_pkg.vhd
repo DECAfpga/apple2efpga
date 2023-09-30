@@ -36,7 +36,7 @@ constant demistify_serialdebug : std_logic := '0';
 	COMPONENT mist_top -- Rename to match the guest core
 		PORT
 		(
-			CLOCK_27 		:	IN STD_LOGIC_VECTOR(1 downto 0);	-- to match the guest core
+			CLOCK_27 		:	IN STD_LOGIC;	-- to match the guest core
 			SDRAM_DQ		:	 INOUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 			SDRAM_A			:	 OUT STD_LOGIC_VECTOR(12 DOWNTO 0);
 			SDRAM_DQML		:	 OUT STD_LOGIC;

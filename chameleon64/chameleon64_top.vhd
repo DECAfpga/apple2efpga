@@ -298,7 +298,7 @@ rtc_cs<='0';
 
 		-- LEDs
 		led_green => led_green,
-		led_red => led_red,
+		led_red => not led_red,
 		ir => ir_data,
 	
 		-- PS/2 Keyboard
@@ -395,8 +395,8 @@ rtc_cs<='0';
 	guest: COMPONENT mist_top
 	PORT map
 	(
-		CLOCK_27 => clk8&clk8, -- Comment out one of these lines to match the guest core.
---		CLOCK_27 => clk8,
+--		CLOCK_27 => clk8&clk8, -- Comment out one of these lines to match the guest core.
+		CLOCK_27 => clk8,
 --		RESET_N => reset_n,
 		-- clocks
 		LED => led_red,
@@ -470,8 +470,8 @@ rtc_cs<='0';
 		sysclk_frequency => 500,
 		debug => false,
 		jtag_uart => false,
-		-- SPI_FASTBIT => 2, -- Reducing this will make SPI comms faster, for cores which are clocked fast enough.
-		-- SPI_INTERNALBIT => 0, -- This will make SPI comms faster, for cores which are clocked fast enough.
+		SPI_FASTBIT => 1, -- Reducing this will make SPI comms faster, for cores which are clocked fast enough.
+		SPI_INTERNALBIT => 0, -- This will make SPI comms faster, for cores which are clocked fast enough.
 		SPI_EXTERNALCLK => true -- V1 hardware has external limitations on SD card speed.
 	)
 	port map (

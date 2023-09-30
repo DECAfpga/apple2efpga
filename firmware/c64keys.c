@@ -122,7 +122,7 @@ unsigned int c64keytable[]=
 	LAYER(KEY_TAB,KEY_TAB), /* $3A	Control */
 	LAYER(KEY_F2,KEY_2), /* $3B	2 */
 	KEY_SPACE, /* $3C	Space */
-	QUAL_CTRL|KEY_LCTRL, /* $3D	Commodore */
+	KEY_ALTGR, /* $3D	Commodore */
 	KEY_Q, /* $3E	Q */
 	QUAL_LAYERKEY  /* $3F	Run/Stop */
 };

@@ -13,11 +13,12 @@ set_global_assignment -name VHDL_FILE [file join $::quartus(qip_path) PS2_Ctrl.v
 set_global_assignment -name VHDL_FILE [file join $::quartus(qip_path) keyboard.vhd]
 set_global_assignment -name VHDL_FILE [file join $::quartus(qip_path) disk_ii_rom.vhd]
 set_global_assignment -name VHDL_FILE [file join $::quartus(qip_path) disk_ii.vhd]
+set_global_assignment -name VHDL_FILE [file join $::quartus(qip_path) drive_ii.vhd]
 set_global_assignment -name VHDL_FILE [file join $::quartus(qip_path) apple2.vhd]
 set_global_assignment -name VHDL_FILE [file join $::quartus(qip_path) mockingboard/vol_table_array.vhd]
 set_global_assignment -name VHDL_FILE [file join $::quartus(qip_path) mockingboard/mockingboard.vhd]
 set_global_assignment -name VHDL_FILE [file join $::quartus(qip_path) mockingboard/via6522.vhd]
-set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) mockingboard/YM2149.sv]
+set_global_assignment -name VHDL_FILE [file join $::quartus(qip_path) mockingboard/YM2149.vhd]
 
 #set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) mist/mist_clk.qip]
 set_global_assignment -name SDC_FILE [file join $::quartus(qip_path) apple2efpga.sdc]

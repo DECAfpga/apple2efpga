@@ -94,7 +94,8 @@ architecture datapath of mist_top is
    "OBC,Scanlines,Off,25%,50%,75%;"&
    "O5,Joysticks,Normal,Swapped;"&
    "O6,Mockingboard S4,off,on;"&
-   "T0,Reset (Hold for hard reset);";
+   "T0,Reset;" &
+   "T7,Hard Reset;";
 
   function to_slv(s: string) return std_logic_vector is 
     constant ss: string(1 to s'length) := s; 
@@ -305,7 +306,7 @@ begin
     end if;
   end process;
   
-  SDRAM_CLK <= not CLK_28M;
+  SDRAM_CLK <= CLK_28M;
   
   pll : entity work.mist_clk 
   port map (

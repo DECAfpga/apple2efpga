@@ -331,7 +331,7 @@ begin
 	guest : component mist_top
 		port map
 		(
-         	CLOCK_27 => MAX10_CLK1_50&MAX10_CLK1_50,
+         	CLOCK_27 => MAX10_CLK1_50,
 			LED => LED(0),
 			--SDRAM
 			SDRAM_DQ   => DRAM_DQ,

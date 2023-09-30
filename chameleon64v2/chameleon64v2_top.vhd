@@ -309,7 +309,7 @@ begin
 			ps2_keyboard_clk => ps2_keyboard_clk_out,
 			ps2_keyboard_dat => ps2_keyboard_dat_out,
 			led_green => led_green,
-			led_red => led_red
+			led_red => not led_red
 		);
 
 
@@ -431,8 +431,8 @@ begin
 	guest: COMPONENT mist_top
 	PORT map
 	(
-		CLOCK_27 => clk50m&clk50m, -- Comment out one of these lines to match the guest core.
---		CLOCK_27 => clk50m,
+--		CLOCK_27 => clk50m&clk50m, -- Comment out one of these lines to match the guest core.
+		CLOCK_27 => clk50m,
 --		RESET_N => reset_n,
 		LED => led_red,
 		-- clocks
